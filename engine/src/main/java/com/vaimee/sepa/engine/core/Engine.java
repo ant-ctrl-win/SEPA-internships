@@ -32,7 +32,7 @@ import com.vaimee.sepa.engine.gates.websocket.WebsocketServer;
 import com.vaimee.sepa.engine.processing.Processor;
 import com.vaimee.sepa.engine.scheduling.Scheduler;
 import com.vaimee.sepa.logging.Logging;
-import org.apache.jena.base.Sys;
+// import org.apache.jena.base.Sys;
 
 /**
  * This class represents the SPARQL Subscription Broker (Core) of the SPARQL

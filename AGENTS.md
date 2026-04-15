@@ -1,115 +1,67 @@
 # AGENTS.md
 
-## Build Commands
+## Build
+
+Maven multi-module (Java 21, `maven.compiler.release=21`). Modules must build in dependency order:
 
 ```bash
-mvn compile                                    # Compile all modules
-mvn package -DskipTests                         # Build fat JARs (engine, dashboard, chat)
-mvn package -DskipTests -pl engine -am          # Build engine + its dependencies only
-mvn package -DskipTests -pl tool-dashboard -am  # Build dashboard + dependencies only
-mvn clean deploy -DskipTests -Drevision=X.Y.Z  # Publish to Maven repo (needs settings.xml)
+mvn install -DskipTests -pl client-api          # 1. client-api first (others depend on it)
+mvn install -pl engine -am                       # 2. engine (+ transitive deps)
+mvn install -pl tool-dashboard -am               # 3. dashboard
 ```
 
-## Test Commands
+**Why `-DskipTests` on client-api**: its tests are integration tests (`IT*.java`) that require a running SEPA engine.
 
-```bash
-mvn test                                        # Unit tests only (surefire; excludes IT* and Stress*)
-mvn verify                                      # Unit + integration tests (requires running engine for IT)
-mvn test -Dtest=SEPAAclTest -pl engine           # Run a single unit test in a specific module
-mvn verify -Dit.test=ITPattern -pl client-api    # Run a single integration test
-mvn test -Dtest=StressUsingSPARQLProtocol -pl client-api  # Run a stress test manually
+### GitHub Packages auth
+
+The project depends on `com.vaimee:sjenar-*` from GitHub Packages. A `settings.xml` with a valid GitHub PAT must exist at repo root (gitignored). The CI and Docker builds pass it as a BuildKit secret.
+
+### Version mismatch
+
+`engine/pom.xml` hardcodes `client-api` version `1.0.1` while the parent uses `${revision}` = `1.0.0-SNAPSHOT`. Other modules use `${project.parent.version}`. If you get client-api resolution errors, check this.
+
+## Test
+
+- **Unit tests**: `mvn test` — surefire excludes `IT*.java` and `Stress*.java`
+- **Integration tests**: `mvn verify` — failsafe runs `IT*` classes; requires a running engine + SPARQL store
+- **CI flow**: starts engine from `engine/target/engine-*.jar`, polls `http://localhost:8000/echo`, then `mvn verify`
+
+## Architecture
+
+```
+client-api/      Java library: Producer, Consumer, Aggregator patterns
+  └─ JSAP (.jsap) loaded by Gson → SPARQL11Properties → SPARQL11SEProperties → JSAP
+engine/          Core broker (HTTP :8000 query/update, WS :9000 subscribe)
+  main class: com.vaimee.sepa.engine.core.Engine
+  config: engine.jpar (ports, security), endpoint.jpar (SPARQL store)
+tool-dashboard/  Swing GUI
+  main class: com.vaimee.sepa.tools.dashboard.Dashboard
+example-chat/    Demo app using client-api
 ```
 
-Surefire excludes: `**/IT*.java`, `**/Stress*.java`. Failsafe picks up `IT*.java`.
-Tests require JUnit Jupiter 5.11.3 (declared in root pom.xml).
+Data flow: Client → Engine (SPARQL 1.1 SE Protocol) → SPARQL Store (Jena in-memory or Blazegraph :9999).
 
-## Project Structure
+## Key config files
 
-```
-SEPA-internships/
-├── client-api/          # Java library: Producer, Consumer, Aggregator, JSAP parser, OAuth client
-├── engine/              # SEPA broker: HTTP/WS gates, SPU manager, scheduler, security
-├── example-chat/        # Demo Swing chat app using client-api
-├── tool-dashboard/      # Swing GUI: Explorer, Query, Update, Subscribe tabs
-└── pom.xml              # Parent POM (Java 21, CI-friendly ${revision} versioning)
-```
+| File | Purpose | Loaded by |
+|------|---------|-----------|
+| `*.jsap` | Client: host, ports, paths, SPARQL templates, forced bindings | client-api / dashboard |
+| `*.jpar` | Engine: gates ports, security, scheduler, endpoint config | Engine at startup |
+| `dashboard.properties` | Stores path to the JSAP the dashboard loads | Dashboard (gitignored) |
 
-Key packages:
-- `com.vaimee.sepa.api.pattern` — Producer, Consumer, Aggregator, Client, GenericClient
-- `com.vaimee.sepa.api.commons.properties` — JSAP, SPARQL11Properties, SPARQL11SEProperties
-- `com.vaimee.sepa.api.commons.security` — ClientSecurityManager, OAuthProperties, SSLManager
-- `com.vaimee.sepa.engine.core` — Engine entry point, EngineProperties
-- `com.vaimee.sepa.engine.gates` — HTTP/WebSocket protocol adapters
-- `com.vaimee.sepa.engine.processing` — Request processors, SPU manager
-- `com.vaimee.sepa.engine.dependability` — Security, ACL, authorization (local/LDAP/Keycloak)
+## Known bugs
 
-## Code Style
+**Null-pointer on missing JSAP keys** — `SPARQL11Properties.java:154` and `SPARQL11SEProperties.java:111`:
+When Gson deserializes a JSAP that lacks `sparql11protocol` (or `sparql11seprotocol`), the field is set to `null`. The `else` branch that creates safe defaults (line 163 / line 123) is skipped because `uri != null`. Every getter on that protocol field then NPEs. This is why `explorer.jsap` (no protocol keys) crashes the dashboard but `localhost.jsap` (has them) works.
 
-- **Indentation**: Tabs (1 tab per level)
-- **Brace style**: K&R (opening brace on same line)
-- **No enforced style**: No checkstyle, spotless, editorconfig, or PMD
-- **Line length**: No enforced limit
+## Engine paths
 
-### Naming Conventions
+Engine uses `/query` and `/update` — **not** `/sparql`. JSAP files must match. The default `endpoint.jpar` uses `/sparql` because that's the backend SPARQL store path, not the engine gate path.
 
-| Element | Convention | Example |
-|---|---|---|
-| Interfaces | `I` prefix | `IProducer`, `IConsumer`, `ISecurityManager` |
-| Classes | PascalCase | `Engine`, `SPARQL11Properties` |
-| Methods | camelCase | `syncSubscribe()`, `setParameter()` |
-| Constants | SCREAMING_SNAKE_CASE | `SPARQL_ID`, `TIMEOUT` |
-| Exceptions | `SEPA` prefix + `Exception` suffix | `SEPAPropertiesException` |
-| MBean interfaces | Class + `MBean` suffix | `EngineMBean` |
-| Enums | PascalCase type, SCREAMING_SNAKE values | `ProtocolScheme.http` |
+## Security
 
-### Error Handling
+OAuth 2.0 client-credential flow. Three backends: `local` (in-memory), `ldap`, `keycloak`. Default JKS password: `sepa2017`. Configured in `engine.jpar` → `gates.security.type`.
 
-- All business exceptions are checked, prefixed with `SEPA`: `SEPAPropertiesException`, `SEPAProtocolException`, `SEPASecurityException`, `SEPABindingsException`
-- Dual constructors: `(String message)` and `(String message, Throwable cause)`
-- Always include `serialVersionUID`
-- Multi-catch pattern common: `catch (SEPAProtocolException | SEPASecurityException | IOException e)`
-- Engine main uses `System.err.println + System.exit(1)` for fatal errors
+## Docker
 
-### Logging
-
-- Static facade: `com.vaimee.sepa.logging.Logging` wraps Log4j2
-- Usage: `Logging.error(...)`, `Logging.info(...)`, `Logging.trace(...)`
-- Some files use `LogManager.getLogger()` directly
-- Custom log levels: `SPUManager`, `spu`, `timing`, `subscriptions`, `http`, `oauth`, `ldap`, `ping`
-- Default level: `error` (console), `off` (file)
-- Config: `log4j2.xml` in each module's `src/main/resources/`
-
-### Imports
-
-No strict ordering enforced. General pattern: `java.*`, then `com.google.*`/`org.apache.*`, then `com.vaimee.*`. No unused import cleanup enforced.
-
-## Configuration Files
-
-- **JSAP** (`.jsap`): Client-side config — host, ports, paths, SPARQL templates, forced bindings, OAuth settings
-- **JPAR** (`.jpar`): Engine config — gate ports, security mode, scheduler, SPARQL endpoint
-- **`dashboard.properties`**: Points to the JSAP file the dashboard loads at startup
-- **`engine.jpar`** (`engine/src/main/resources/config/`): Default engine ports (HTTP 8000, WS 9000), paths (`/query`, `/update`, `/subscribe`)
-- **`endpoint.jpar`** (`engine/src/main/resources/endpoints/`): SPARQL store connection (default: Jena in-memory)
-- **`sepa.jks`**: JKS keystore for JWT signing + TLS (password: `sepa2020`)
-
-## Running Locally
-
-```bash
-# 1. Start engine (uses Jena in-memory by default)
-cd engine/target
-java -Dlog4j.configurationFile=./log4j2.xml -jar engine-1.0.0-SNAPSHOT.jar
-
-# 2. Start dashboard (working dir must be tool-dashboard/ for dashboard.properties)
-cd tool-dashboard
-java -jar target/dashboard-1.0.0-SNAPSHOT-shaded.jar
-
-# 3. Or with Blazegraph instead of Jena in-memory
-#    Copy endpoint-blazegraph.jpar over endpoint.jpar, then start engine
-```
-
-## CI/CD
-
-- GitHub Actions (`main.yml`): manual `workflow_dispatch` only
-- Build: `mvn --batch-mode --update-snapshots compile`
-- Test: `mvn package`, start engine, then `mvn verify -e`
-- Docker: builds `vaimee/sepa:<tag>`, exposes 8000 (HTTP), 9000 (WS), 7090 (JMX)
+`Dockerfile` builds only the engine. Build requires `--secret` flags for `maven_settings`, `github_actor`, `github_token`. Use `build-docker.sh` or see the Dockerfile for the exact secret IDs. No `docker-compose.yml` exists yet.

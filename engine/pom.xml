@@ -120,7 +120,7 @@
 		<dependency>
 			<groupId>com.vaimee</groupId>
 			<artifactId>client-api</artifactId>
-			<version>${project.parent.version}</version>
+			<version>1.0.1</version>
 		</dependency>
 		<dependency>
 			<groupId>com.vaimee</groupId>

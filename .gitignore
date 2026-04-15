@@ -171,6 +171,8 @@ buildNumber.properties
 # Avoid ignoring Maven wrapper jar file (.jar files are usually ignored)
 !/.mvn/wrapper/maven-wrapper.jar
 
+
+
 # End of https://www.gitignore.io/api/java,maven,eclipse,intellij
 /blazegraph.jnl
 /.idea/
@@ -191,3 +193,6 @@ settings.xml
 /dashboard.properties
 .DS_Store
 /tool-dashboard/dashboard.properties
+
+github_actor.txt
+github_token.txt
