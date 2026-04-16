@@ -370,7 +370,7 @@ public class Dashboard implements LoginListener {
 			try {
 
 				if (load) {
-					appProfile = new JSAP("file:///" + file.replaceAll("\\\\", "/"));
+					appProfile = new JSAP(new File(file).toURI().toString());
 					// appProfile.read(file, true);
 
 					jsapFiles.clear();
@@ -380,12 +380,12 @@ public class Dashboard implements LoginListener {
 					jsapListDM.add(file);
 
 				} else if (appProfile != null) {
-					JSAP temp = new JSAP(file);
+					JSAP temp = new JSAP(new File(file).toURI().toString());
 					appProfile.merge(temp);
 					jsapFiles.add(file);
 					jsapListDM.add(file);
 				}
-			} catch (SEPAPropertiesException e) {
+			} catch (SEPAPropertiesException | IllegalArgumentException e) {
 				logger.error(e.getMessage());
 				return false;
 			}
@@ -1487,7 +1487,7 @@ public class Dashboard implements LoginListener {
 	protected void onQueryButton() {
 		try {
 			query();
-		} catch (SEPAPropertiesException | SEPABindingsException e1) {
+		} catch (SEPAPropertiesException | SEPABindingsException | IllegalArgumentException e1) {
 			logger.error(e1.getMessage());
 		}
 	}

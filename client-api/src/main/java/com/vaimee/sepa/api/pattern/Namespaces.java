@@ -8,6 +8,7 @@ import org.apache.commons.text.StringEscapeUtils;
 
 import org.apache.jena.atlas.io.IndentedLineBuffer;
 import org.apache.jena.atlas.io.IndentedWriter;
+import org.apache.jena.query.QueryException;
 import org.apache.jena.query.QueryParseException;
 import org.apache.jena.sparql.graph.PrefixMappingMem;
 import org.apache.jena.sparql.modify.request.*;
@@ -112,7 +113,7 @@ public class Namespaces {
                 sb.append(writer);
             }
 
-        } catch (QueryParseException ex) {
+        } catch (QueryException ex) {
             sb.append(prologue).append(replaceBindings(sparql, bindings));
         }
 

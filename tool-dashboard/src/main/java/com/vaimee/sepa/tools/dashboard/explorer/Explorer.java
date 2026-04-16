@@ -258,8 +258,8 @@ public class Explorer {
 	public void onExplorerPropertiesNavigation(MouseEvent e) {
 		logger.debug(e);
 		if (e.getClickCount() == 2) {
-			if (!tableInstanceProperties.getValueAt(tableInstanceProperties.getSelectedRow(), 2).equals("URI")
-					&& !tableInstanceProperties.getValueAt(tableInstanceProperties.getSelectedRow(), 2).equals("BNODE"))
+			Object valueAt = tableInstanceProperties.getValueAt(tableInstanceProperties.getSelectedRow(), 2);
+			if (valueAt == null || (!valueAt.equals("URI") && !valueAt.equals("BNODE")))
 				return;
 
 			Bindings forced = new Bindings();
