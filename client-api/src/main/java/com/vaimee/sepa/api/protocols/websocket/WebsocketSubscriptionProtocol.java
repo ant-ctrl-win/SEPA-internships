@@ -43,6 +43,7 @@ public class WebsocketSubscriptionProtocol extends SubscriptionProtocol implemen
 	protected Request lastRequest = null;
 	protected WebsocketClientEndpoint client;
 
+	private static final int MAX_CONNECT_RETRIES = 3;
 	private final Object mutex;
 
 //	public WebsocketSubscriptionProtocol(String host, int port, String path, ISubscriptionHandler handler)
@@ -96,25 +97,39 @@ public class WebsocketSubscriptionProtocol extends SubscriptionProtocol implemen
 		// TODO Auto-generated constructor stub
 	}
 
-	private void connect() throws SEPASecurityException {
+	private void connect(int maxRetries) throws SEPAProtocolException {
 		Logging.trace("connect");
 
+		int effectiveMax = (maxRetries < 0) ? MAX_CONNECT_RETRIES : maxRetries;
+		int attempts = 0;
+
 		while (!client.isConnected()) {
+			if (attempts > effectiveMax) {
+				throw new SEPAProtocolException("Connection failed after " + attempts + " attempts: " + url);
+			}
 			try {
 				client.connect(url);
 			} catch (SEPAProtocolException e) {
-				// Logging.error(e.getMessage());
+				attempts++;
+				Logging.warn("Connection attempt " + attempts + " failed: " + e.getMessage());
+				if (attempts > effectiveMax) {
+					break;
+				}
 				try {
 					Thread.sleep(1000);
 				} catch (InterruptedException e1) {
-					return;
+					throw new SEPAProtocolException("Connection interrupted");
 				}
 				try {
 					client.close();
 				} catch (IOException e1) {
 					Logging.error(e1.getMessage());
 				}
-				client = new WebsocketClientEndpoint(sm, this);
+				try {
+					client = new WebsocketClientEndpoint(sm, this);
+				} catch (SEPASecurityException e1) {
+					throw new SEPAProtocolException("Failed to create websocket client: " + e1.getMessage());
+				}
 			}
 		}
 	}
@@ -123,7 +138,7 @@ public class WebsocketSubscriptionProtocol extends SubscriptionProtocol implemen
 	public void subscribe(SubscribeRequest request) throws SEPAProtocolException, SEPASecurityException {
 		Logging.trace("subscribe: " + request);
 
-		connect();
+		connect((int) request.getNRetry());
 
 		synchronized (mutex) {
 			if (lastRequest != null)

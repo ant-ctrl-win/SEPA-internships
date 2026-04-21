@@ -82,8 +82,7 @@ public class DashboadApp {
 	}
 
 	public void subscribe(String queryID, String sparql, Bindings bindings, long timeout, long nretry)
-			throws SEPAProtocolException, SEPASecurityException, SEPAPropertiesException, SEPABindingsException,
-			InterruptedException {
+			throws SEPAProtocolException, SEPASecurityException, SEPAPropertiesException, SEPABindingsException {
 		sepaClient.subscribe(queryID, sparql, bindings, timeout, nretry);
 	}
 

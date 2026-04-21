@@ -228,27 +228,24 @@ public final class GenericClient extends Client implements ISubscriptionHandler 
 	 * @throws SEPASecurityException   the SEPA security exception
 	 * @throws SEPAPropertiesException the SEPA properties exception
 	 * @throws SEPABindingsException   the SEPA bindings exception
-	 * @throws InterruptedException
 	 */
 	public void subscribe(String ID, String sparql, Bindings forced, String alias, long timeout, long nRetry)
-			throws SEPAProtocolException, SEPASecurityException, SEPAPropertiesException, SEPABindingsException,
-			InterruptedException {
+			throws SEPAProtocolException, SEPASecurityException, SEPAPropertiesException, SEPABindingsException {
 		_subscribe(ID, sparql, forced, alias, timeout, nRetry);
 	}
 
 	public void subscribe(String ID, String sparql, Bindings forced, String alias) throws SEPAProtocolException,
-			SEPASecurityException, SEPAPropertiesException, SEPABindingsException, InterruptedException {
+			SEPASecurityException, SEPAPropertiesException, SEPABindingsException {
 		_subscribe(ID, sparql, forced, alias, TIMEOUT, NRETRY);
 	}
 
 	public void subscribe(String ID, String sparql, Bindings forced, long timeout, long nRetry)
-			throws SEPAProtocolException, SEPASecurityException, SEPAPropertiesException, SEPABindingsException,
-			InterruptedException {
+			throws SEPAProtocolException, SEPASecurityException, SEPAPropertiesException, SEPABindingsException {
 		_subscribe(ID, sparql, forced, null, timeout, nRetry);
 	}
 
 	public void subscribe(String ID, String sparql, Bindings forced) throws SEPAProtocolException,
-			SEPASecurityException, SEPAPropertiesException, SEPABindingsException, InterruptedException {
+			SEPASecurityException, SEPAPropertiesException, SEPABindingsException {
 		_subscribe(ID, sparql, forced, null, TIMEOUT, NRETRY);
 	}
 
@@ -262,26 +259,24 @@ public final class GenericClient extends Client implements ISubscriptionHandler 
 	 * @throws SEPASecurityException   the SEPA security exception
 	 * @throws SEPAPropertiesException the SEPA properties exception
 	 * @throws SEPABindingsException   the SEPA bindings exception
-	 * @throws InterruptedException
 	 */
 	public void subscribe(String ID, Bindings forced, String alias, long timeout, long nRetry)
-			throws SEPAProtocolException, SEPASecurityException, SEPAPropertiesException, SEPABindingsException,
-			InterruptedException {
+			throws SEPAProtocolException, SEPASecurityException, SEPAPropertiesException, SEPABindingsException {
 		_subscribe(ID, null, forced, alias, timeout, nRetry);
 	}
 
 	public void subscribe(String ID, Bindings forced, String alias) throws SEPAProtocolException, SEPASecurityException,
-			SEPAPropertiesException, SEPABindingsException, InterruptedException {
+			SEPAPropertiesException, SEPABindingsException {
 		_subscribe(ID, null, forced, alias, TIMEOUT, NRETRY);
 	}
 
 	public void subscribe(String ID, Bindings forced, long timeout, long nRetry) throws SEPAProtocolException,
-			SEPASecurityException, SEPAPropertiesException, SEPABindingsException, InterruptedException {
+			SEPASecurityException, SEPAPropertiesException, SEPABindingsException {
 		_subscribe(ID, null, forced, null, timeout, nRetry);
 	}
 
 	public void subscribe(String ID, Bindings forced) throws SEPAProtocolException, SEPASecurityException,
-			SEPAPropertiesException, SEPABindingsException, InterruptedException {
+			SEPAPropertiesException, SEPABindingsException {
 		_subscribe(ID, null, forced, null, TIMEOUT, NRETRY);
 	}
 
@@ -393,22 +388,24 @@ public final class GenericClient extends Client implements ISubscriptionHandler 
 	 * @throws SEPAPropertiesException the SEPA properties exception
 	 * @throws URISyntaxException      the URI syntax exception
 	 * @throws SEPABindingsException   the SEPA bindings exception
-	 * @throws InterruptedException
 	 */
 	private void _subscribe(String ID, String sparql, Bindings forced, String alias, long timeout, long nRretry)
-			throws SEPAProtocolException, SEPASecurityException, SEPAPropertiesException, SEPABindingsException,
-			InterruptedException {
+			throws SEPAProtocolException, SEPASecurityException, SEPAPropertiesException, SEPABindingsException {
 
 		if (sparql == null)
 			sparql = appProfile.addPrefixesAndReplaceBindings(appProfile.getSPARQLQuery(ID), addDefaultDatatype(forced, ID, true));
 		else if (ID != null) sparql = appProfile.addPrefixesAndReplaceBindings(sparql, addDefaultDatatype(forced, ID, true));
-		
+
 		if (sparql == null)
 			throw new SEPAProtocolException("SPARQL query not found " + ID);
 
 		synchronized (subLock) {
 			if (req != null)
-				subLock.wait();
+				try {
+					subLock.wait();
+				} catch (InterruptedException e) {
+					throw new SEPAProtocolException("Subscribe interrupted");
+				}
 
 			url = appProfile.getSubscribeProtocol(ID).getScheme()+ "_" + appProfile.getSubscribeHost(ID) + "_" + appProfile.getSubscribePort(ID) + "_"
 					+ appProfile.getSubscribePath(ID);

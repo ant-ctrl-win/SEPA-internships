@@ -1476,12 +1476,24 @@ public class Dashboard implements LoginListener {
 	}
 
 	protected void onSubscribeButton() {
-		try {
-			subscribe();
-		} catch (IOException | SEPAPropertiesException | NumberFormatException | SEPAProtocolException
-				 | SEPASecurityException | SEPABindingsException | InterruptedException e1) {
-			logger.error(e1.getMessage());
-		}
+		subscribeButton.setEnabled(false);
+		new SwingWorker<Void, Void>() {
+			@Override
+			protected Void doInBackground() {
+				try {
+					subscribe();
+				} catch (IOException | SEPAPropertiesException | NumberFormatException | SEPAProtocolException
+						 | SEPASecurityException | SEPABindingsException e1) {
+					SwingUtilities.invokeLater(() -> logger.error(e1.getMessage()));
+				}
+				return null;
+			}
+
+			@Override
+			protected void done() {
+				subscribeButton.setEnabled(true);
+			}
+		}.execute();
 	}
 
 	protected void onQueryButton() {
@@ -1514,7 +1526,7 @@ public class Dashboard implements LoginListener {
 	}
 
 	protected void subscribe() throws IOException, SEPAPropertiesException, NumberFormatException,
-			SEPAProtocolException, SEPASecurityException, SEPABindingsException, InterruptedException {
+			SEPAProtocolException, SEPASecurityException, SEPABindingsException {
 
 		Bindings bindings = new Bindings();
 		for (int row = 0; row < queryForcedBindings.getRowCount(); row++) {
