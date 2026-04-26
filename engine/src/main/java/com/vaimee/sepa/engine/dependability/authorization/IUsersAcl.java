@@ -6,6 +6,7 @@ import com.google.gson.JsonObject;
 
 import com.vaimee.sepa.api.commons.exceptions.SEPASecurityException;
 
+@Deprecated // Legacy Virtuoso ACL interface — replaced by ZitadelSecurityManager which does not manage Virtuoso ACLs
 public interface IUsersAcl {
 	public void createUser(String uid, JsonElement graphs) throws SEPASecurityException;
 	public void removeUser(String uid) throws SEPASecurityException;

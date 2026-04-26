@@ -29,7 +29,7 @@ import com.vaimee.sepa.api.commons.response.Response;
 import com.vaimee.sepa.api.commons.security.ClientAuthorization;
 import com.vaimee.sepa.engine.dependability.authorization.InMemorySecurityManager;
 import com.vaimee.sepa.engine.dependability.authorization.IsqlProperties;
-import com.vaimee.sepa.engine.dependability.authorization.KeyCloakSecurityManager;
+import com.vaimee.sepa.engine.dependability.authorization.ZitadelSecurityManager;
 import com.vaimee.sepa.engine.dependability.authorization.LdapProperties;
 import com.vaimee.sepa.engine.dependability.authorization.LdapSecurityManager;
 import com.vaimee.sepa.engine.dependability.authorization.SecurityManager;
@@ -59,7 +59,7 @@ public class Dependability {
 	}
 
 	public static void enableKeyCloakSecurity(SSLContext ssl, RSAKey key,LdapProperties prop, IsqlProperties isqlprop) throws SEPASecurityException {
-		authManager = new  KeyCloakSecurityManager( ssl,  key, prop, isqlprop);
+		authManager = new  ZitadelSecurityManager( ssl,  key, prop, isqlprop);
 		isSecure = true;
 	}
 

@@ -11,6 +11,7 @@ import com.google.gson.JsonObject;
 import com.vaimee.sepa.api.commons.exceptions.SEPASecurityException;
 import com.vaimee.sepa.logging.Logging;
 
+@Deprecated // Legacy LDAP-to-Virtuoso periodic sync thread — replaced by ZitadelSecurityManager which does not perform user sync
 public class UsersSync {
 	private final IUsersSync ldap;
 	private final IUsersAcl isql;

@@ -21,23 +21,23 @@ import com.vaimee.sepa.api.commons.security.Credentials;
 import com.vaimee.sepa.engine.dependability.authorization.identities.DigitalIdentity;
 import com.vaimee.sepa.logging.Logging;
 
-public class KeyCloakSecurityManager extends SecurityManager {
+public class ZitadelSecurityManager extends SecurityManager {
 
 	private static final String MOCK_PASSWORD = "MOCK_PASSWORD_123";
 
-	public KeyCloakSecurityManager(SSLContext ssl, RSAKey key, LdapProperties prop, IsqlProperties isqlprop)
+	public ZitadelSecurityManager(SSLContext ssl, RSAKey key, LdapProperties prop, IsqlProperties isqlprop)
 			throws SEPASecurityException {
 		super(ssl, key, false);
 	}
 	
 	@Override
 	public synchronized Response register(String uid) {
-		return new ErrorResponse(HttpStatus.SC_UNAUTHORIZED, "not supported", "Implemented by KeyCloak");
+		return new ErrorResponse(HttpStatus.SC_UNAUTHORIZED, "not supported", "Implemented by Zitadel");
 	}
 	
 	@Override
 	public synchronized Response getToken(String encodedCredentials) {
-		return new ErrorResponse(HttpStatus.SC_UNAUTHORIZED, "not supported", "Implemented by KeyCloak");
+		return new ErrorResponse(HttpStatus.SC_UNAUTHORIZED, "not supported", "Implemented by Zitadel");
 	}
 
 	/** Requesting Party Token 
@@ -46,10 +46,10 @@ public class KeyCloakSecurityManager extends SecurityManager {
 	 * Once you decode the token, you can also use the permissions within the token to enforce authorization decisions.
 	 * <p>
 	 * This is essentially what the policy enforcers do. Be sure to:
-	 * 1) Validate the signature of the RPT (based on the realm’s public key)
+	 * 1) Validate the signature of the RPT (based on the realm's public key)
 	 * 2) Query for token validity based on its exp, iat, and aud claims
 	 * <p>
-	 * The claim "preferred_username" is used to identify the user
+	 * The claim "preferred_username" is used to identify the user, with fallback to username and client_id for Zitadel service users.
 	 * */
 	@Override
 	public synchronized ClientAuthorization validateToken(String accessToken) {

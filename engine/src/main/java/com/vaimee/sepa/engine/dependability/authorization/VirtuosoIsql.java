@@ -17,6 +17,7 @@ import com.google.gson.JsonObject;
 import com.vaimee.sepa.api.commons.exceptions.SEPASecurityException;
 import com.vaimee.sepa.logging.Logging;
 
+@Deprecated // Legacy Virtuoso ACL sync — replaced by ZitadelSecurityManager which does not sync Virtuoso users
 public class VirtuosoIsql implements IUsersAcl{
 
 	private final String endpointUsersPassword;

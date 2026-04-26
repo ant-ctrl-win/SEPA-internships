@@ -44,7 +44,7 @@ public class ClientSecurityManager implements Closeable {
 		oauthProperties = oauthProp;
 		
 		if (oauthProperties.getProvider().equals(OAUTH_PROVIDER.SEPA)) oauth = new DefaultAuthenticationService(oauthProp);
-		else oauth = new KeycloakAuthenticationService(oauthProp);
+		else oauth = new ZitadelAuthenticationService(oauthProp);
 	}
 	
 	public SSLContext getSSLContext() throws SEPASecurityException {

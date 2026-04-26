@@ -14,6 +14,7 @@ import com.google.gson.JsonObject;
 import com.vaimee.sepa.api.commons.exceptions.SEPASecurityException;
 import com.vaimee.sepa.logging.Logging;
 
+@Deprecated // Legacy Keycloak LDAP sync — replaced by ZitadelSecurityManager which does not require LDAP
 public class SyncLdap implements IUsersSync {
 
 	private final LdapNetworkConnection ldap;
