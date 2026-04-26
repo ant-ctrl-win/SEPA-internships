@@ -805,6 +805,8 @@ public class EngineProperties {
 				Dependability.enableLDAPSecurity(ssl, jwt, ldap);
 			} else if (isKeycìCloakEnabled()) {
 				Dependability.enableKeyCloakSecurity(ssl, jwt, ldap, isql);
+			} else if (isZitadelEnabled()) {
+				Dependability.enableKeyCloakSecurity(ssl, jwt, ldap, isql);
 			}
 
 			// Check that SSL has been properly configured
@@ -839,6 +841,10 @@ public class EngineProperties {
 	
 	public boolean isKeycìCloakEnabled() {
 		return this.parameters.gates.security.type.equals("keycloak");
+	}
+	
+	public boolean isZitadelEnabled() {
+		return this.parameters.gates.security.type.equals("zitadel");
 	}
 	
 	public int getMaxConcurrentRequests() {

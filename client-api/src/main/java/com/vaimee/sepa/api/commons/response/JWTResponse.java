@@ -53,6 +53,16 @@ import com.vaimee.sepa.logging.Logging;
  */
 
 public class JWTResponse extends Response {
+
+	private String accessToken;
+	private String tokenType;
+	private long expiresIn;
+	private String refreshToken;
+	private String sessionState;
+	private String scope;
+	private long refreshExpiresIn;
+	private long notBeforePolicy;
+
 	/**
 	 * Instantiates a new JWT response.
 	 * @throws SEPASecurityException 
@@ -77,6 +87,24 @@ public class JWTResponse extends Response {
 	public JWTResponse(JsonObject json) {
 		super();
 		this.json = json;
+		accessToken = json.get("access_token") != null && !json.get("access_token").isJsonNull() ? json.get("access_token").getAsString() : null;
+		tokenType = json.get("token_type") != null && !json.get("token_type").isJsonNull() ? json.get("token_type").getAsString() : null;
+		expiresIn = json.get("expires_in") != null && !json.get("expires_in").isJsonNull() ? json.get("expires_in").getAsLong() : 0;
+		if (json.has("refresh_token") && !json.get("refresh_token").isJsonNull()) {
+			refreshToken = json.get("refresh_token").getAsString();
+		}
+		if (json.has("session_state") && !json.get("session_state").isJsonNull()) {
+			sessionState = json.get("session_state").getAsString();
+		}
+		if (json.has("scope") && !json.get("scope").isJsonNull()) {
+			scope = json.get("scope").getAsString();
+		}
+		if (json.has("refresh_expires_in") && !json.get("refresh_expires_in").isJsonNull()) {
+			refreshExpiresIn = json.get("refresh_expires_in").getAsLong();
+		}
+		if (json.has("not-before-policy") && !json.get("not-before-policy").isJsonNull()) {
+			notBeforePolicy = json.get("not-before-policy").getAsLong();
+		}
 	}
 	
 	/**

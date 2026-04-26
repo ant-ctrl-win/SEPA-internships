@@ -2,6 +2,8 @@
 engine/*.jpar
 engine/sepa.jks
 
+nul
+
 # timing created by engine
 engine/logs
 

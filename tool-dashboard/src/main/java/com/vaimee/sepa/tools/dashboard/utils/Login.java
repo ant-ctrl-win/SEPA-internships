@@ -8,8 +8,6 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import com.vaimee.sepa.api.commons.exceptions.SEPAPropertiesException;
-import com.vaimee.sepa.api.commons.exceptions.SEPASecurityException;
 import com.vaimee.sepa.api.commons.response.ErrorResponse;
 import com.vaimee.sepa.api.commons.response.Response;
 import com.vaimee.sepa.api.commons.security.ClientSecurityManager;
@@ -30,6 +28,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 import javax.swing.SwingConstants;
+import javax.swing.SwingWorker;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import javax.swing.JCheckBox;
@@ -61,6 +60,7 @@ public class Login extends JDialog {
 		
 		setType(Type.POPUP);
 		setModal(true);
+		setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
 		if (oauth == null)
 			throw new IllegalArgumentException("OAuthProperties is null");
 		if (m_listener == null)
@@ -176,25 +176,41 @@ public class Login extends JDialog {
 	}
 	
 	private void submit() {
-		try {
-			sm = new ClientSecurityManager(oauth);
-			oauth.setCredentials(ID.getText(), new String(PWD.getPassword()));
+		final String uid = ID.getText();
+		final String pwd = new String(PWD.getPassword());
 
-			Response ret = sm.refreshToken();
-			if (ret.isError()) {
-				logger.error(ret);
-				m_listener.onLoginError((ErrorResponse) ret);
-				setTitle("Wrong credentials");
-				return;
+		btnLogin.setEnabled(false);
+		setTitle("Authenticating...");
+
+		new SwingWorker<Response, Void>() {
+			@Override
+			protected Response doInBackground() throws Exception {
+				sm = new ClientSecurityManager(oauth);
+				oauth.setCredentials(uid, pwd);
+				return sm.refreshToken();
 			}
 
-			if (chckRemeberMe.isSelected()) oauth.storeProperties();
-			
-			m_listener.onLogin(ID.getText());//, new String(PWD.getPassword()),chckRemeberMe.isSelected());
-		} catch (SEPASecurityException | SEPAPropertiesException e1) {
-			logger.error(e1.getMessage());
-			m_listener.onLoginError(new ErrorResponse(401, "not_authorized", e1.getMessage()));
-			return;
-		}
-    }
+			@Override
+			protected void done() {
+				btnLogin.setEnabled(true);
+				try {
+					Response ret = get();
+					if (ret.isError()) {
+						logger.error(ret);
+						setTitle("Wrong credentials");
+						m_listener.onLoginError((ErrorResponse) ret);
+						return;
+					}
+
+					if (chckRemeberMe.isSelected()) oauth.storeProperties();
+					m_listener.onLogin(uid);
+					dispose();
+				} catch (Exception e) {
+					logger.error(e.getMessage());
+					m_listener.onLoginError(new ErrorResponse(401, "not_authorized", e.getMessage()));
+					setTitle("Wrong credentials");
+				}
+			}
+		}.execute();
+	}
 }

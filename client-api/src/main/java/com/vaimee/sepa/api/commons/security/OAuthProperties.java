@@ -88,7 +88,7 @@ public class OAuthProperties {
 	private File propertiesFile;
 	private JsonObject oauthJsonObject;
 	
-	public enum OAUTH_PROVIDER{SEPA,KEYCLOAK};
+	public enum OAUTH_PROVIDER{SEPA,KEYCLOAK,ZITADEL};
 	private OAUTH_PROVIDER provider = OAUTH_PROVIDER.SEPA;
 	
 	public OAUTH_PROVIDER getProvider() {
@@ -103,9 +103,12 @@ public class OAuthProperties {
 		
 		if (secret != null) encryption = new Encryption(secret);
 
+		this.propertiesFile = new File(jsap.getBaseUri());
+
 		if (jsap.isSecure()) {
-			//oauthJsonObject = jsap.getAsJsonObject("oauth");
-			//TODO: to be adapted to the new JSAP structure!
+			oauthJsonObject = jsap.getOauth();
+			if (oauthJsonObject == null) return;
+			
 			if (oauthJsonObject.has("enable")) enabled = oauthJsonObject.get("enable").getAsBoolean();
 			if (oauthJsonObject.has("loadTrustMaterial")) {
 				jks = oauthJsonObject.get("loadTrustMaterial").getAsJsonObject().get("jks").getAsString();
@@ -117,8 +120,9 @@ public class OAuthProperties {
 				if (oauthJsonObject.has("provider")) {
 					String p = oauthJsonObject.get("provider").getAsString();
 					if (p.equals("keycloak")) provider = OAUTH_PROVIDER.KEYCLOAK;
+					else if (p.equals("zitadel")) provider = OAUTH_PROVIDER.ZITADEL;
 					else if (p.equals("sepa")) provider = OAUTH_PROVIDER.SEPA;
-					else throw new SEPASecurityException("Provider must have one of the following values: [sepa|keycloak]");	
+					else throw new SEPASecurityException("Provider must have one of the following values: [sepa|keycloak|zitadel]");	
 				}
 				
 				if (oauthJsonObject.has("authentication")) {
@@ -127,15 +131,15 @@ public class OAuthProperties {
 					if (auth.has("endpoint"))
 						tokenRequestURL = auth.get("endpoint").getAsString();
 					if (auth.has("client_id"))
-						clientId = encryption.decrypt(auth.get("client_id").getAsString());
+						clientId = decryptOrDefault(auth.get("client_id").getAsString());
 					if (auth.has("client_secret"))
-						clientSecret = encryption.decrypt(auth.get("client_secret").getAsString());
+						clientSecret = decryptOrDefault(auth.get("client_secret").getAsString());
 					if (auth.has("jwt"))
-						jwt = encryption.decrypt(auth.get("jwt").getAsString());
+						jwt = decryptOrDefault(auth.get("jwt").getAsString());
 					if (auth.has("expires"))
-						expires = Long.decode(encryption.decrypt(auth.get("expires").getAsString()));
+						expires = decryptLongOrDefault(auth.get("expires").getAsString());
 					if (auth.has("type"))
-						type = encryption.decrypt(auth.get("type").getAsString());	
+						type = decryptOrDefault(auth.get("type").getAsString());	
 				}
 											
 				// Initial access token registration
@@ -256,63 +260,74 @@ public class OAuthProperties {
 	 * @throws IOException             Signals that an I/O exception has occurred.
 	 */
 	public synchronized void storeProperties() throws SEPAPropertiesException, SEPASecurityException {
-		jsap.add("oauth", new JsonObject());
-		jsap.getAsJsonObject("oauth").add("enable", new JsonPrimitive(enabled));
+		if (propertiesFile == null) {
+			Logging.warn("Cannot store OAuth properties: propertiesFile is null. Skipping save.");
+			return;
+		}
+
+		JsonObject fullJsap;
+		try (java.io.FileReader reader = new java.io.FileReader(propertiesFile)) {
+			fullJsap = new com.google.gson.Gson().fromJson(reader, JsonObject.class);
+		} catch (IOException e) {
+			Logging.error("Failed to read " + propertiesFile.getPath() + ": " + e.getMessage());
+			throw new SEPAPropertiesException("Failed to read " + propertiesFile.getPath() + ": " + e.getMessage());
+		}
+
+		if (fullJsap == null) {
+			fullJsap = new JsonObject();
+		}
+
+		JsonObject oauthBlock = new JsonObject();
+		oauthBlock.add("enable", new JsonPrimitive(enabled));
 
 		if (ssl != null) {
-			jsap.getAsJsonObject("oauth").add("ssl", new JsonPrimitive(ssl));
+			oauthBlock.add("ssl", new JsonPrimitive(ssl));
 		}
 
 		if (jks != null && jksSecret != null) {
 			JsonObject obj = new JsonObject();
 			obj.add("jks", new JsonPrimitive(jks));
 			obj.add("secret", new JsonPrimitive(jksSecret));
-			jsap.getAsJsonObject("oauth").add("loadTrustMaterial", obj);	
+			oauthBlock.add("loadTrustMaterial", obj);
 		}
-		
 
 		if (registrationURL != null) {
 			JsonObject reg = new JsonObject();
 			reg.add("endpoint", new JsonPrimitive(registrationURL));
-			
 			if (initialAccessToken != null) reg.add("initialAccessToken", new JsonPrimitive(initialAccessToken));
 			if (username != null) reg.add("username", new JsonPrimitive(username));
 			if (clientRegistrationId != null) reg.add("client_id", new JsonPrimitive(clientRegistrationId));
-			
-			jsap.getAsJsonObject("oauth").add("registration", reg);
+			oauthBlock.add("registration", reg);
 		}
-		
+
 		if (tokenRequestURL != null) {
 			JsonObject auth = new JsonObject();
-			
 			auth.add("endpoint", new JsonPrimitive(tokenRequestURL));
 			if (clientId != null)
 				auth.add("client_id", new JsonPrimitive(encryption.encrypt(clientId)));
-			
 			if (clientSecret != null)
 				auth.add("client_secret", new JsonPrimitive(encryption.encrypt(clientSecret)));
-
 			if (jwt != null)
 				auth.add("jwt", new JsonPrimitive(encryption.encrypt(jwt)));
 			if (expires != -1)
-				auth.add("expires",
-						new JsonPrimitive(encryption.encrypt(String.format("%d", expires))));
+				auth.add("expires", new JsonPrimitive(encryption.encrypt(String.format("%d", expires))));
 			if (type != null)
 				auth.add("type", new JsonPrimitive(encryption.encrypt(type)));
-			jsap.getAsJsonObject("oauth").add("authentication", auth);
+			oauthBlock.add("authentication", auth);
 		}
-		
+
 		if (provider.equals(OAUTH_PROVIDER.SEPA)) {
-			jsap.getAsJsonObject("oauth").add("provider", new JsonPrimitive("sepa"));
+			oauthBlock.add("provider", new JsonPrimitive("sepa"));
 		} else if (provider.equals(OAUTH_PROVIDER.KEYCLOAK)) {
-			jsap.getAsJsonObject("oauth").add("provider", new JsonPrimitive("keycloak"));
+			oauthBlock.add("provider", new JsonPrimitive("keycloak"));
+		} else if (provider.equals(OAUTH_PROVIDER.ZITADEL)) {
+			oauthBlock.add("provider", new JsonPrimitive("zitadel"));
 		}
-			
-		FileWriter out;
-		try {
-			out = new FileWriter(propertiesFile);
-			out.write(jsap.toString());
-			out.close();
+
+		fullJsap.add("oauth", oauthBlock);
+
+		try (FileWriter out = new FileWriter(propertiesFile)) {
+			out.write(fullJsap.toString());
 		} catch (IOException e) {
 			e.printStackTrace();
 			throw new SEPAPropertiesException("IOException: " + propertiesFile.getPath() + " " + e.getMessage());
@@ -353,5 +368,22 @@ public class OAuthProperties {
 
 	public String getClientSecret() {
 		return clientSecret;
+	}
+
+	private String decryptOrDefault(String value) {
+		try {
+			return encryption.decrypt(value);
+		} catch (SEPASecurityException e) {
+			return value;
+		}
+	}
+
+	private long decryptLongOrDefault(String value) {
+		try {
+			String decrypted = encryption.decrypt(value);
+			return Long.parseLong(decrypted);
+		} catch (Exception e) {
+			return Long.parseLong(value);
+		}
 	}
 }

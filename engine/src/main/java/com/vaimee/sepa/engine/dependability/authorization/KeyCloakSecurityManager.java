@@ -23,20 +23,11 @@ import com.vaimee.sepa.logging.Logging;
 
 public class KeyCloakSecurityManager extends SecurityManager {
 
-	private SyncLdap ldap;
-	private VirtuosoIsql isql;
+	private static final String MOCK_PASSWORD = "MOCK_PASSWORD_123";
 
-	public KeyCloakSecurityManager(SSLContext ssl, RSAKey key,LdapProperties prop, IsqlProperties isqlprop)
+	public KeyCloakSecurityManager(SSLContext ssl, RSAKey key, LdapProperties prop, IsqlProperties isqlprop)
 			throws SEPASecurityException {
 		super(ssl, key, false);
-
-		ldap = new SyncLdap(prop);
-
-		isql = new VirtuosoIsql(isqlprop,ldap.getEndpointUsersPassword());
-
-		new UsersSync(ldap, isql);
-		
-		Logging.log("oauth","EndpointUsersPassword: "+ldap.getEndpointUsersPassword());
 	}
 	
 	@Override
@@ -93,13 +84,17 @@ public class KeyCloakSecurityManager extends SecurityManager {
 			claimsSet = signedJWT.getJWTClaimsSet();
 			Logging.log("oauth",claimsSet.toString());
 			// Get client credentials for accessing the SPARQL endpoint
-			uid = claimsSet.getStringClaim("username");
+			uid = claimsSet.getStringClaim("preferred_username");
 			if (uid == null) {
-				Logging.log("oauth","<username> claim is null. Look for <preferred_username>");
-				uid = claimsSet.getStringClaim("preferred_username");
+				Logging.log("oauth","<preferred_username> claim is null. Look for <username>");
+				uid = claimsSet.getStringClaim("username");
 				if (uid == null) {
-					Logging.log("oauth","USER ID not found...");
-					return new ClientAuthorization("invalid_grant", "Username claim not found");
+					Logging.log("oauth","<username> claim is null. Look for <client_id>");
+					uid = claimsSet.getStringClaim("client_id");
+					if (uid == null) {
+						Logging.log("oauth","USER ID not found...");
+						return new ClientAuthorization("invalid_grant", "User identity claim not found");
+					}
 				}
 			}
 			
@@ -201,7 +196,7 @@ public class KeyCloakSecurityManager extends SecurityManager {
 
 	@Override
 	public Credentials getEndpointCredentials(String uid) throws SEPASecurityException {
-		return new Credentials(uid, ldap.getEndpointUsersPassword());
+		return new Credentials(uid, MOCK_PASSWORD);
 	}
 
 	@Override

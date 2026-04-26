@@ -1,186 +1,186 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.vaimee</groupId>
-	<artifactId>sepa</artifactId>
-	<version>${revision}</version>
+    <groupId>com.vaimee</groupId>
+    <artifactId>sepa</artifactId>
+    <version>${revision}</version>
 
-	<packaging>pom</packaging>
+    <packaging>pom</packaging>
 
-	<properties>
-		<revision>1.0.0-SNAPSHOT</revision>
-		<sjenar.revision>1.0.100</sjenar.revision>
+    <properties>
+        <revision>1.0.0-SNAPSHOT</revision>
+        <sjenar.revision>1.0.100</sjenar.revision>
 
-		<update>0</update>
+        <update>0</update>
 
-		<java.version>21</java.version>
-		<maven.compiler.release>21</maven.compiler.release>
-		<maven.compiler.source>21</maven.compiler.source>
-		<maven.compiler.target>21</maven.compiler.target>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	</properties>
+        <java.version>21</java.version>
+        <maven.compiler.release>21</maven.compiler.release>
+        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
 
-	<organization>
-		<name>VAIMEE</name>
-		<url>https://vaimee.com/</url>
-	</organization>
+    <organization>
+        <name>VAIMEE</name>
+        <url>https://vaimee.com/</url>
+    </organization>
 
-	<description>The project aims at developing a SPARQL Event Processing
-		Architecture using JAVA technologies, including APIs and tools</description>
+    <description>The project aims at developing a SPARQL Event Processing
+        Architecture using JAVA technologies, including APIs and tools</description>
 
-	<modules>
-		<module>client-api</module>
-		<module>engine</module>
-		<module>example-chat</module>
-		<module>tool-dashboard</module>
-	</modules>
+    <modules>
+        <module>client-api</module>
+        <module>engine</module>
+        <module>example-chat</module>
+        <module>tool-dashboard</module>
+    </modules>
 
-	<name>SEPA Project</name>
-	<url>https://github.com/vaimee/SEPA.git</url>
-	<licenses>
-		<license>
-			<name>GNU Lesser General Public License v3.0</name>
-			<url>https://www.gnu.org/licenses/lgpl-3.0.en.html</url>
-		</license>
-	</licenses>
-	<developers>
-		<developer>
-			<name>Luca Roffia</name>
-			<email>luca.roffia@vaimee.com</email>
-			<organization>VAIMEE</organization>
-			<organizationUrl>http://vaimee.com/</organizationUrl>
-		</developer>
-		<developer>
-			<name>Gregorio Monari</name>
-			<email>gregorio.monari@vaimee.com</email>
-			<organization>VAIMEE</organization>
-			<organizationUrl>http://vaimee.com/</organizationUrl>
-		</developer>
-	</developers>
+    <name>SEPA Project</name>
+    <url>https://github.com/vaimee/SEPA.git</url>
+    <licenses>
+        <license>
+            <name>GNU Lesser General Public License v3.0</name>
+            <url>https://www.gnu.org/licenses/lgpl-3.0.en.html</url>
+        </license>
+    </licenses>
+    <developers>
+        <developer>
+            <name>Luca Roffia</name>
+            <email>luca.roffia@vaimee.com</email>
+            <organization>VAIMEE</organization>
+            <organizationUrl>http://vaimee.com/</organizationUrl>
+        </developer>
+        <developer>
+            <name>Gregorio Monari</name>
+            <email>gregorio.monari@vaimee.com</email>
+            <organization>VAIMEE</organization>
+            <organizationUrl>http://vaimee.com/</organizationUrl>
+        </developer>
+    </developers>
 
-	<repositories>
-  		<repository>
-    			<id>sjenar</id>
-    			<url>https://maven.pkg.github.com/vaimee/sjenar/</url>
-  		</repository>
+    <repositories>
+        <repository>
+            <id>sjenar</id>
+            <url>https://maven.pkg.github.com/vaimee/sjenar/</url>
+        </repository>
         <repository>
             <id>central</id>
             <url>https://repo1.maven.org/maven2/</url>
         </repository>
-		<repository>
-			<id>sepa</id>
-			<name>GitHub Packages</name>
-			<url>https://maven.pkg.github.com/vaimee/SEPA</url>
-		</repository>
-	</repositories>
-	
-	<scm>
-		<connection>scm:git:git://github.com/vaimee/sepa.git</connection>
-		<developerConnection>scm:git:ssh://github.com/vaimee/sepa.git</developerConnection>
-		<url>https://github.com/vaimee/SEPA</url>
-	</scm>
+        <repository>
+            <id>sepa</id>
+            <name>GitHub Packages</name>
+            <url>https://maven.pkg.github.com/vaimee/SEPA</url>
+        </repository>
+    </repositories>
 
-	<distributionManagement>
-		<repository>
-			<id>sepa</id>
-			<name>GitHub Packages</name>
-			<url>https://maven.pkg.github.com/vaimee/SEPA</url>
-		</repository>
-	</distributionManagement>
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.14.0</version>
-				<configuration>
-					<release>21</release>
-					<proc>none</proc>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>flatten-maven-plugin</artifactId>
-				<version>1.7.2</version>
-				<configuration>
-					<updatePomFile>true</updatePomFile>
-					<flattenMode>resolveCiFriendliesOnly</flattenMode>
-				</configuration>
-				<executions>
-					<execution>
-						<id>flatten</id>
-						<phase>process-resources</phase>
-						<goals>
-							<goal>flatten</goal>
-						</goals>
-					</execution>
-					<execution>
-						<id>flatten.clean</id>
-						<phase>clean</phase>
-						<goals>
-							<goal>clean</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-plugin</artifactId>
-				<version>3.1.2</version>
-				<configuration>
-					<excludes>
-						<exclude>**/IT*.java</exclude>
-						<exclude>**/Stress*.java</exclude>
-					</excludes>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-failsafe-plugin</artifactId>
-				<version>3.1.2</version>
-				<executions>
-					<execution>
-						<goals>
-							<goal>integration-test</goal>
-							<goal>verify</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<artifactId>maven-resources-plugin</artifactId>
-				<version>3.3.1</version>
-				<executions>
-					<execution>
-						<id>copy-defaults</id>
-						<!-- here the phase you need -->
-						<phase>package</phase>
-						<goals>
-							<goal>copy-resources</goal>
-						</goals>
-						<configuration>
-							<outputDirectory>${basedir}/target</outputDirectory>
-							<resources>
-								<resource>
-									<directory>${basedir}/src/main/resources</directory>
-								</resource>
-							</resources>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-		</plugins>
-	</build>
+    <scm>
+        <connection>scm:git:git://github.com/vaimee/sepa.git</connection>
+        <developerConnection>scm:git:ssh://github.com/vaimee/sepa.git</developerConnection>
+        <url>https://github.com/vaimee/SEPA</url>
+    </scm>
 
-	<dependencies>
-		<dependency>
-			<groupId>org.junit.jupiter</groupId>
-			<artifactId>junit-jupiter-api</artifactId>
-			<version>5.11.3</version>
-			<scope>test</scope>
-		</dependency>
-	</dependencies>
+    <distributionManagement>
+        <repository>
+            <id>sepa</id>
+            <name>GitHub Packages</name>
+            <url>https://maven.pkg.github.com/vaimee/SEPA</url>
+        </repository>
+    </distributionManagement>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.14.0</version>
+                <configuration>
+                    <release>21</release>
+                    <proc>none</proc>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>flatten-maven-plugin</artifactId>
+                <version>1.7.2</version>
+                <configuration>
+                    <updatePomFile>true</updatePomFile>
+                    <flattenMode>resolveCiFriendliesOnly</flattenMode>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>flatten</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>flatten</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>flatten.clean</id>
+                        <phase>clean</phase>
+                        <goals>
+                            <goal>clean</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.1.2</version>
+                <configuration>
+                    <excludes>
+                        <exclude>**/IT*.java</exclude>
+                        <exclude>**/Stress*.java</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <version>3.1.2</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>integration-test</goal>
+                            <goal>verify</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>3.3.1</version>
+                <executions>
+                    <execution>
+                        <id>copy-defaults</id>
+                        <!-- here the phase you need -->
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${basedir}/target</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${basedir}/src/main/resources</directory>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>5.11.3</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
 </project>

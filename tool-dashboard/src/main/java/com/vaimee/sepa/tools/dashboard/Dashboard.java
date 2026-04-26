@@ -1783,7 +1783,8 @@ public class Dashboard implements LoginListener {
 
 	@Override
 	public void onLoginClose() {
-
+		logger.warn("Login dialog closed without authentication. Exiting.");
+		System.exit(0);
 	}
 
 	@Override

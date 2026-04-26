@@ -174,6 +174,8 @@ public class JSAP extends SPARQL11SEProperties {
 	protected HashMap<String, String> namespaces = new HashMap<>();
 	protected JsonObject extended = null;// new JsonObject();
 	protected JsonArray include = null; // new JsonArray()
+	protected JsonObject oauth = null;
+	private transient OAuthProperties cachedOauthProperties = null;
 
 	public static void writeToFile(JSAP jsap,String fileName) throws IOException {
 		FileWriter fw = new FileWriter(fileName);
@@ -216,6 +218,7 @@ public class JSAP extends SPARQL11SEProperties {
 		namespaces = jsap.namespaces;
 		queries = jsap.queries;
 		updates = jsap.updates;
+		oauth = jsap.oauth;
 
 		try {
 			in.close();
@@ -276,6 +279,7 @@ public class JSAP extends SPARQL11SEProperties {
 			this.namespaces = jsap.namespaces;
 			this.queries = jsap.queries;
 			this.updates = jsap.updates;
+			this.oauth = jsap.oauth;
 		} else {
 			merge(jsap);
 		}
@@ -305,6 +309,8 @@ public class JSAP extends SPARQL11SEProperties {
 		namespaces = mergeNamespaces(namespaces, temp.namespaces);
 		queries = mergeQueries(queries, temp.queries);
 		updates = mergeUpdates(updates, temp.updates);
+
+		if (temp.oauth != null) oauth = temp.oauth;
 	}
 
 	private JsonObject mergeExtended(JsonObject extended, JsonObject temp) {
@@ -379,12 +385,27 @@ public class JSAP extends SPARQL11SEProperties {
 		return namespaces;
 	}
 
+	public JsonObject getOauth() {
+		return oauth;
+	}
+
 	public OAuthProperties getAuthenticationProperties() {
-		return null;
+		if (oauth == null) return null;
+		if (cachedOauthProperties == null) {
+			try {
+				cachedOauthProperties = new OAuthProperties(this);
+			} catch (SEPAPropertiesException e) {
+				Logging.error("Failed to create OAuthProperties: " + e.getMessage());
+				return null;
+			}
+		}
+		return cachedOauthProperties;
 	}
 
 	public boolean isSecure() {
-		return false;
+		if (oauth == null) return false;
+		if (!oauth.has("enable")) return false;
+		return oauth.get("enable").getAsBoolean();
 	}
 
 	public boolean reconnect() {
