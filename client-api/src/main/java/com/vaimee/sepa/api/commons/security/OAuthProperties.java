@@ -75,6 +75,9 @@ public class OAuthProperties {
 	
 	private String clientId = null;
 	private String clientSecret = null;
+private String authorizationEndpoint;
+private String redirectUri;
+private String codeVerifier; // opzionale, per PKCE
 
 	private String jwt = null;
 	private long expires = -1;
@@ -90,7 +93,9 @@ public class OAuthProperties {
 	
 	public enum OAUTH_PROVIDER{SEPA,KEYCLOAK,ZITADEL};
 	private OAUTH_PROVIDER provider = OAUTH_PROVIDER.SEPA;
-	
+
+
+
 	public OAUTH_PROVIDER getProvider() {
 		return provider;
 	}
@@ -134,12 +139,20 @@ public class OAuthProperties {
 						clientId = decryptOrDefault(auth.get("client_id").getAsString());
 					if (auth.has("client_secret"))
 						clientSecret = decryptOrDefault(auth.get("client_secret").getAsString());
+if (auth.has("authorization_endpoint"))
+    authorizationEndpoint = auth.get("authorization_endpoint").getAsString();
+if (auth.has("redirect_uri"))
+    redirectUri = auth.get("redirect_uri").getAsString();
 					if (auth.has("jwt"))
 						jwt = decryptOrDefault(auth.get("jwt").getAsString());
 					if (auth.has("expires"))
 						expires = decryptLongOrDefault(auth.get("expires").getAsString());
 					if (auth.has("type"))
-						type = decryptOrDefault(auth.get("type").getAsString());	
+						type = decryptOrDefault(auth.get("type").getAsString());
+					if (auth.has("authorization_endpoint"))
+						authorizationEndpoint = auth.get("authorization_endpoint").getAsString();
+					if (auth.has("redirect_uri"))
+						redirectUri = auth.get("redirect_uri").getAsString();
 				}
 											
 				// Initial access token registration
@@ -370,6 +383,7 @@ public class OAuthProperties {
 		return clientSecret;
 	}
 
+
 	private String decryptOrDefault(String value) {
 		try {
 			return encryption.decrypt(value);
@@ -385,5 +399,17 @@ public class OAuthProperties {
 		} catch (Exception e) {
 			return Long.parseLong(value);
 		}
+	}
+
+	public String getAuthorizationEndpoint() {
+		return authorizationEndpoint;
+	}
+
+	public String getRedirectUri() {
+		return redirectUri;
+	}
+
+	public String getCodeVerifier() {
+		return codeVerifier;
 	}
 }

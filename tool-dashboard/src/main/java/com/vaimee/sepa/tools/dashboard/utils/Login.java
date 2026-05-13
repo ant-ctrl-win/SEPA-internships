@@ -34,6 +34,35 @@ import java.awt.event.KeyEvent;
 import javax.swing.JCheckBox;
 
 public class Login extends JDialog {
+    // Mini web server per ricevere il code via redirect
+    private String waitForAuthCode() throws Exception {
+        final String[] codeHolder = new String[1];
+        java.net.ServerSocket server = new java.net.ServerSocket(8080);
+        try {
+            java.net.Socket client = server.accept();
+            java.io.BufferedReader in = new java.io.BufferedReader(new java.io.InputStreamReader(client.getInputStream()));
+            String line;
+            String code = null;
+            while ((line = in.readLine()) != null && !line.isEmpty()) {
+                if (line.startsWith("GET ")) {
+                    int idx = line.indexOf("code=");
+                    if (idx > 0) {
+                        code = line.substring(idx + 5, line.indexOf(' ', idx));
+                        break;
+                    }
+                }
+            }
+            java.io.PrintWriter out = new java.io.PrintWriter(client.getOutputStream());
+            out.println("HTTP/1.1 200 OK\r\nContent-Type: text/html\r\n\r\nLogin completato. Puoi chiudere questa finestra.");
+            out.flush();
+            client.close();
+            codeHolder[0] = code;
+        } finally {
+            server.close();
+        }
+        return codeHolder[0];
+    }
+
 	private static final Logger logger = LogManager.getLogger();
 
 	/**
@@ -46,6 +75,7 @@ public class Login extends JDialog {
 	private JLabel lblPassword;
 
 	private JButton btnLogin;
+private JButton btnZitadelAuthCode;
 
 	private OAuthProperties oauth;
 	private ClientSecurityManager sm;
@@ -95,6 +125,40 @@ public class Login extends JDialog {
 		gbl_contentPanel.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
 
 		btnLogin = new JButton("Login");
+
+        btnZitadelAuthCode = new JButton("Login con Zitadel (Auth Code)");
+        btnZitadelAuthCode.addActionListener(e -> {
+            new Thread(() -> {
+                try {
+                    // 1. Genera code_verifier e code_challenge (PKCE)
+                    String codeVerifier = java.util.UUID.randomUUID().toString().replace("-", "");
+                    String codeChallenge = java.util.Base64.getUrlEncoder().withoutPadding().encodeToString(
+                        java.security.MessageDigest.getInstance("SHA-256").digest(codeVerifier.getBytes("US-ASCII"))
+                    );
+                    // 2. Costruisci URL
+                    String url = sm.getOauth().getAuthorizationUrl(codeChallenge);
+                    // 3. Apri browser
+                    java.awt.Desktop.getDesktop().browse(new java.net.URI(url));
+                    // 4. Avvia web server locale per ricevere il code
+                    String code = waitForAuthCode();
+                    // 5. Scambia il code per il token
+                    com.vaimee.sepa.api.commons.response.Response resp = sm.getOauth().requestTokenWithAuthorizationCode(code, codeVerifier, 10000);
+                    // 6. Gestisci la risposta/token
+                    if (resp instanceof com.vaimee.sepa.api.commons.response.JWTResponse) {
+                        // Successo: salva token e chiudi dialog
+                        m_listener.onLoginSuccess();
+                        dispose();
+                    } else {
+                        javax.swing.JOptionPane.showMessageDialog(this, "Errore login: " + resp.toString());
+                    }
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                    javax.swing.JOptionPane.showMessageDialog(this, "Errore login: " + ex.getMessage());
+                }
+            }).start();
+        });
+        contentPanel.add(btnZitadelAuthCode);
+
 		
 		contentPanel.setLayout(gbl_contentPanel);
 		{

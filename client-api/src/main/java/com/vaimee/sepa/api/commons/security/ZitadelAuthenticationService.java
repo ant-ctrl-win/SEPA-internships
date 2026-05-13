@@ -18,6 +18,7 @@ import org.apache.http.util.EntityUtils;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import java.net.URLEncoder
 
 import com.vaimee.sepa.api.commons.exceptions.SEPASecurityException;
 import com.vaimee.sepa.api.commons.response.ErrorResponse;
@@ -103,5 +104,50 @@ public class ZitadelAuthenticationService extends AuthenticationService {
 				return new ErrorResponse(HttpStatus.SC_INTERNAL_SERVER_ERROR, "IOException", e.getMessage());
 			}
 		}
+	}
+
+	public String getAuthorizationUrl(String codeChallenge) throws UnsupportedEncodingException {
+    return oauthProperties.getAuthorizationEndpoint()
+        + "?response_type=code"
+        + "&client_id=" + URLEncoder.encode(oauthProperties.getClientId(), "UTF-8")
+        + "&redirect_uri=" + URLEncoder.encode(oauthProperties.getRedirectUri(), "UTF-8")
+        + "&scope=openid%20profile"
+        + "&code_challenge=" + URLEncoder.encode(codeChallenge, "UTF-8")
+        + "&code_challenge_method=S256";
+    }
+
+	public Response requestTokenWithAuthorizationCode(String code, String redirectUri, String codeVerifier, int timeout) {
+    try {
+        URI uri = new URI(oauthProperties.getTokenRequestUrl());
+        HttpPost httpRequest = new HttpPost(uri);
+
+        List<NameValuePair> params = new ArrayList<>();
+        params.add(new BasicNameValuePair("grant_type", "authorization_code"));
+        params.add(new BasicNameValuePair("code", code));
+        params.add(new BasicNameValuePair("redirect_uri", redirectUri));
+        params.add(new BasicNameValuePair("client_id", oauthProperties.getClientId()));
+        params.add(new BasicNameValuePair("code_verifier", codeVerifier));
+        params.add(new BasicNameValuePair("scope", "openid profile"));
+
+        UrlEncodedFormEntity body = new UrlEncodedFormEntity(params, Charset.forName("UTF-8"));
+        httpRequest.setEntity(body);
+        httpRequest.setHeader("Content-Type", "application/x-www-form-urlencoded");
+
+        RequestConfig requestConfig = RequestConfig.custom().setSocketTimeout(timeout).setConnectTimeout(timeout).build();
+        httpRequest.setConfig(requestConfig);
+
+        CloseableHttpResponse response = httpClient.execute(httpRequest);
+        HttpEntity entity = response.getEntity();
+        String jsonResponse = EntityUtils.toString(entity, Charset.forName("UTF-8"));
+        EntityUtils.consume(entity);
+
+        JsonObject json = new Gson().fromJson(jsonResponse, JsonObject.class);
+        if (json.has("error")) {
+            return new ErrorResponse(response.getStatusLine().getStatusCode(), "token_request", json.get("error").getAsString());
+        }
+        return new JWTResponse(json);
+    } catch (Exception e) {
+        return new ErrorResponse(HttpStatus.SC_INTERNAL_SERVER_ERROR, "Exception", e.getMessage());
+    }
 	}
 }
