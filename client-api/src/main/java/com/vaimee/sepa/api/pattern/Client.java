@@ -59,6 +59,11 @@ public abstract class Client implements java.io.Closeable {
 		Logging.trace("SEPA parameters: " + appProfile);
 
 		// Security manager
+		Logging.info("=== DIAG: Client() constructor ===");
+		Logging.info("DIAG: appProfile.isSecure() = " + appProfile.isSecure());
+		Logging.info("DIAG: appProfile.getOauth() = " + (appProfile.getOauth() != null ? appProfile.getOauth().toString() : "null"));
+		Logging.info("================================");
+
 		if (appProfile.isSecure()) {
 			OAuthProperties oauth = appProfile.getAuthenticationProperties();
 			

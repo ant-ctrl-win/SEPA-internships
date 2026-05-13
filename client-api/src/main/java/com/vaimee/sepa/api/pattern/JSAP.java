@@ -220,6 +220,11 @@ public class JSAP extends SPARQL11SEProperties {
 		updates = jsap.updates;
 		oauth = jsap.oauth;
 
+		Logging.info("=== DIAG: JSAP constructor ===");
+		Logging.info("DIAG: uri = " + uri);
+		Logging.info("DIAG: jsap.oauth (from Gson) = " + (jsap.oauth != null ? jsap.oauth.toString() : "null"));
+		Logging.info("DIAG: this.oauth after copy = " + (this.oauth != null ? this.oauth.toString() : "null"));
+
 		try {
 			in.close();
 		} catch (IOException e) {
@@ -284,6 +289,7 @@ public class JSAP extends SPARQL11SEProperties {
 			merge(jsap);
 		}
 
+		invalidateAuth();
 		prefixes.buildSPARQLPrefixes(namespaces);
 	}
 
@@ -311,6 +317,7 @@ public class JSAP extends SPARQL11SEProperties {
 		updates = mergeUpdates(updates, temp.updates);
 
 		if (temp.oauth != null) oauth = temp.oauth;
+		invalidateAuth();
 	}
 
 	private JsonObject mergeExtended(JsonObject extended, JsonObject temp) {
@@ -400,6 +407,10 @@ public class JSAP extends SPARQL11SEProperties {
 			}
 		}
 		return cachedOauthProperties;
+	}
+
+	public void invalidateAuth() {
+		cachedOauthProperties = null;
 	}
 
 	public boolean isSecure() {

@@ -421,10 +421,18 @@ public class Dashboard implements LoginListener {
 //		handler.setSepaClient(sepaClient);
 
 		// Security
+		logger.info("=== DIAG: Security check before login ===");
+		logger.info("DIAG: appProfile.isSecure() = " + appProfile.isSecure());
+		logger.info("DIAG: appProfile.getOauth() = " + (appProfile.getOauth() != null ? appProfile.getOauth().toString() : "null"));
+		logger.info("DIAG: appProfile.getAuthenticationProperties() = " + appProfile.getAuthenticationProperties());
+		logger.info("DIAG: jsapFiles = " + jsapFiles);
+		logger.info("========================================");
+
 		if (appProfile.isSecure()) {
 			login = new Login(appProfile.getAuthenticationProperties(), this, frmSepaDashboard);// ,clientIDString,clientSecretString);
 			login.setVisible(true);
 		} else {
+			logger.warn("DIAG: !!! BYPASSING LOGIN — appProfile.isSecure() returned false !!!");
 			onLogin("ვაიმეე");
 		}
 

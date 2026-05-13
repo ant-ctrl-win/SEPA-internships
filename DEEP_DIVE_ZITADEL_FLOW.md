@@ -731,7 +731,7 @@ Il campo `"type": "zitadel"` attiva il nuovo ramo in `setSecurity()` e istanzia 
 │    Verifica firma RS256 con nimbus-jose-jwt                 │
 │    Estrae claim: preferred_username → username → client_id  │
 │    (PRIMA: solo username → preferred_username)              │
-│    getEndpointCredentials() → MOCK_PASSWORD_123              │
+│    getEndpointCredentials() → MOCK_PASSWORD_123             │
 │    (PRIMA: ldap.getEndpointUsersPassword())                 │
 │    Restituisce ClientAuthorization con credenziali SPARQL   │
 └─────────────────────────────────────────────────────────────┘

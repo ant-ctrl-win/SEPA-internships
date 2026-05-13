@@ -1,5 +1,18 @@
 {
   "host": "sepa.wda.vaimee.com",
+  "oauth": {
+    "enable": true,
+    "ssl": "TLS",
+    "authentication": {
+      "endpoint": "https://sepa-engine-auth-ie5az2.eu1.zitadel.cloud/oauth/v2/token",
+      "client_id": "5rwXpcR2vkLKvUP46ZrDZ9BbPK3G8lo7K/pao2qUSLQ\u003d",
+      "client_secret": "d5Iv70ljvIaZRkyQNOe7l/nTr+0DAwoYACIduf0qdPlKFDfCmN4g3AqdJxD9XdQvaQELM11VFjUO7QSMh8z3ZS19FzxxHdg9eDahb6f2Bhw\u003d",
+      "jwt": "xabtQWoH8RJJk1FyKJ78J1131flYWQdfpeJVzvXqm1gVNd1BcxPKByLjkXSjrKSq3q49k3EjdLz3UXHOEgCVXUtNCH/s4zPCv/w8QRexiQthKbJjVYtRN72S5NmgyyRn/y16v/xuiN2x1NevPUZacZjktFD2c4ZKqoZ6rpD0x5ORHJIXzLogXUEUsGvdwYFVzKQ5bToc9NGBLxmS6VmMZ6DG944zisw0yhlW8HALIErKRGsU5IdAPrYLspadNOqH/F7jmGvv8mZETy32jZlZX6u84N/ZACZo371XpINjmzQ2rAunKVe+4hVwM4b2D6koWndrf68bDdZlWekRm4lAlTSqLbBgO0KKLCGnznQRsRuECFsRylySYgz0VV479bFboIcsWzDVJQCv4owrC43Frh0AEA2VACbGEucxPC65IN3rZNqLhNXeCnifTVEhW+Ky4pcJDIJW3qtVdNWScnfe9bAMrImlj3gdL8YsRdy1H1AEi54qxy+9mBXkUUK6UpIAs0YHd4lAeFxje4B3xcziBEk6XEUhvYZOmAEP6DSsd2bUad0cXZXRjOcFOp/8cnSQ8vm7HzpGiYM3gHAkWWKevSlN94SYqYRznF4D8fOYkQZfcng05LAqVTdqL66woNTR8it/UYUHckkTix2uqoLpSGzbE7p4NEbkXCwjrBMl2HoKPTqzCBhvq2QOo7bWdGPU2bNJDxBE1Q9oek2StFk+psyWRE8gi+NK6kBKfQ7dzDZlA+T6GzFrhDT3/QwgYzMQ4jmfMarGJOm1xHgzAlFb14mx7Dx53NVJxVNfYhNuD0jCPXhJHjNaCBoJHLuRk8F03VboyoSjbMfW5DDhqnuRW8XaWXRd9HaHDwjGbCsZJxW6aXcSnjDciHePFFzSDa068gNQS6QDV/c33iIXIxqfzPz8Pioci7smR+1Gm8n95c8v/GJvBa0VG14kFH2/2fIvvAuQ8CPRqKcNgCSuwH9eoLpJ0Qqp6KjxjoqaAMScLiqMI9JthfxHnafG43vD3tpY",
+      "expires": "+w6yA/X3eUE7it19LcasCw\u003d\u003d",
+      "type": "vvcpMsVLTnhHZ0KnT5PchA\u003d\u003d"
+    },
+    "provider": "zitadel"
+  },
   "sparql11protocol": {
     "protocol": "https",
     "port": 443,
@@ -366,22 +379,20 @@
       "target": "multiplegraphs",
       "livegraph": "http://wot.arces.unibo.it/observation"
     },
-    "https://tools.vaimee.com/mqtt_agent": {
-      
-    },
+    "https://tools.vaimee.com/mqtt_agent": {},
     "https://tools.vaimee.com/bulk_load": {
       "id": "https://tools.vaimee.com/mqtt/updates/add_mqtt_mapping",
       "pattern": "VALUES (%variables%) {%values%}",
       "variables": "?observation ?topic",
       "values": [
-        "<http://wot.arces.unibo.it/monitor#application/10/device/70b3d57ed005fe1a/event/up/Temperature> 'application/10/device/70b3d57ed005fe1a/event/up/Temperature'",
-        "<http://wot.arces.unibo.it/monitor#application/10/device/70b3d57ed005fe1a/event/up/CH1> 'application/10/device/70b3d57ed005fe1a/event/up/CH1'",
-        "<http://wot.arces.unibo.it/monitor#application/10/device/70b3d57ed005fe1a/event/up/CH2> 'application/10/device/70b3d57ed005fe1a/event/up/CH2'",
-        "<http://wot.arces.unibo.it/monitor#application/10/device/70b3d57ed005fe1a/event/up/CH3> 'application/10/device/70b3d57ed005fe1a/event/up/CH3'",
-        "<http://wot.arces.unibo.it/monitor#application/10/device/70b3d57ed005fe1a/event/up/CH4> 'application/10/device/70b3d57ed005fe1a/event/up/CH4'",
-        "<http://wot.arces.unibo.it/monitor#application/10/device/70b3d57ed005fe1a/event/up/CH5> 'application/10/device/70b3d57ed005fe1a/event/up/CH5'",
-        "<http://wot.arces.unibo.it/monitor#application/10/device/70b3d57ed005fe1a/event/up/CH6> 'application/10/device/70b3d57ed005fe1a/event/up/CH6'",
-        "<http://wot.arces.unibo.it/monitor#application/10/device/70b3d57ed005fe1a/event/up/Battery> 'application/10/device/70b3d57ed005fe1a/event/up/Battery'"
+        "\u003chttp://wot.arces.unibo.it/monitor#application/10/device/70b3d57ed005fe1a/event/up/Temperature\u003e \u0027application/10/device/70b3d57ed005fe1a/event/up/Temperature\u0027",
+        "\u003chttp://wot.arces.unibo.it/monitor#application/10/device/70b3d57ed005fe1a/event/up/CH1\u003e \u0027application/10/device/70b3d57ed005fe1a/event/up/CH1\u0027",
+        "\u003chttp://wot.arces.unibo.it/monitor#application/10/device/70b3d57ed005fe1a/event/up/CH2\u003e \u0027application/10/device/70b3d57ed005fe1a/event/up/CH2\u0027",
+        "\u003chttp://wot.arces.unibo.it/monitor#application/10/device/70b3d57ed005fe1a/event/up/CH3\u003e \u0027application/10/device/70b3d57ed005fe1a/event/up/CH3\u0027",
+        "\u003chttp://wot.arces.unibo.it/monitor#application/10/device/70b3d57ed005fe1a/event/up/CH4\u003e \u0027application/10/device/70b3d57ed005fe1a/event/up/CH4\u0027",
+        "\u003chttp://wot.arces.unibo.it/monitor#application/10/device/70b3d57ed005fe1a/event/up/CH5\u003e \u0027application/10/device/70b3d57ed005fe1a/event/up/CH5\u0027",
+        "\u003chttp://wot.arces.unibo.it/monitor#application/10/device/70b3d57ed005fe1a/event/up/CH6\u003e \u0027application/10/device/70b3d57ed005fe1a/event/up/CH6\u0027",
+        "\u003chttp://wot.arces.unibo.it/monitor#application/10/device/70b3d57ed005fe1a/event/up/Battery\u003e \u0027application/10/device/70b3d57ed005fe1a/event/up/Battery\u0027"
       ]
     },
     "https://tools.vaimee.com/drop_graphs": {
@@ -392,8 +403,8 @@
       "mail.smtp.starttls.enable": "false",
       "mail.smtp.host": "mail.vaimee.com",
       "mail.smtp.port": "587",
-      "username": "BikU/LKq8tCKTluZFKPeuQ==",
-      "password": "kkn7/GuGJzZbBgGr7V4kew==",
+      "username": "BikU/LKq8tCKTluZFKPeuQ\u003d\u003d",
+      "password": "kkn7/GuGJzZbBgGr7V4kew\u003d\u003d",
       "encrypt": false,
       "graph": "http://tools.vaimee.com/email/observation"
     },
@@ -494,7 +505,7 @@
       }
     },
     "ADD_MQTT_MAPPER": {
-      "sparql": "INSERT DATA {GRAPH <http://wot.arces.unibo.it/mqtt> {?mapper rdf:type mqtt:Mapper ; mqtt:topic ?topic}}",
+      "sparql": "INSERT DATA {GRAPH \u003chttp://wot.arces.unibo.it/mqtt\u003e {?mapper rdf:type mqtt:Mapper ; mqtt:topic ?topic}}",
       "forcedBindings": {
         "topic": {
           "type": "literal",
@@ -507,7 +518,7 @@
       }
     },
     "ADD_OBSERVATION": {
-      "sparql": "INSERT {GRAPH <http://wot.arces.unibo.it/observation> {?observation rdf:type sosa:Observation ; rdfs:label ?label ; rdfs:comment ?comment ; sosa:hasFeatureOfInterest ?location ; sosa:hasResult _:quantity . _:quantity rdf:type qudt:QuantityValue ; qudt:unit ?unit ; qudt:numericValue 'NaN'}} WHERE {}",
+      "sparql": "INSERT {GRAPH \u003chttp://wot.arces.unibo.it/observation\u003e {?observation rdf:type sosa:Observation ; rdfs:label ?label ; rdfs:comment ?comment ; sosa:hasFeatureOfInterest ?location ; sosa:hasResult _:quantity . _:quantity rdf:type qudt:QuantityValue ; qudt:unit ?unit ; qudt:numericValue \u0027NaN\u0027}} WHERE {}",
       "forcedBindings": {
         "observation": {
           "type": "uri",
@@ -564,7 +575,7 @@
       }
     },
     "ADD_PLACE": {
-      "sparql": "INSERT {GRAPH <http://wot.arces.unibo.it/context> {?place rdf:type schema:Place; schema:name ?name ;  schema:GeoCoordinates _:coordinate . _:coordinate schema:latitude ?lat ; schema:longitude ?lon}} WHERE {}",
+      "sparql": "INSERT {GRAPH \u003chttp://wot.arces.unibo.it/context\u003e {?place rdf:type schema:Place; schema:name ?name ;  schema:GeoCoordinates _:coordinate . _:coordinate schema:latitude ?lat ; schema:longitude ?lon}} WHERE {}",
       "forcedBindings": {
         "place": {
           "type": "uri",
@@ -587,11 +598,11 @@
       }
     },
     "ADD_REGEX_TO_MQTT_MAPPER": {
-      "sparql": "WITH <http://wot.arces.unibo.it/mqtt> INSERT {?mapper mqtt:regex ?regex} WHERE {?mapper rdf:type mqtt:Mapper}",
+      "sparql": "WITH \u003chttp://wot.arces.unibo.it/mqtt\u003e INSERT {?mapper mqtt:regex ?regex} WHERE {?mapper rdf:type mqtt:Mapper}",
       "forcedBindings": {
         "regex": {
           "type": "literal",
-          "value": "S[|]\\w+[|]I[|]\\w+[|](?<id1>\\w+)[|](?<value1>\\w+)[|](?<id2>\\w+)[|](?<value2>\\w+)"
+          "value": "S[|]\\w+[|]I[|]\\w+[|](?\u003cid1\u003e\\w+)[|](?\u003cvalue1\u003e\\w+)[|](?\u003cid2\u003e\\w+)[|](?\u003cvalue2\u003e\\w+)"
         },
         "mapper": {
           "type": "uri",
@@ -600,7 +611,7 @@
       }
     },
     "ADD_TOPIC_TO_MQTT_MAPPER": {
-      "sparql": "WITH <http://wot.arces.unibo.it/mqtt> INSERT {?mapper mqtt:topic ?topic} WHERE {?mapper rdf:type mqtt:Mapper}",
+      "sparql": "WITH \u003chttp://wot.arces.unibo.it/mqtt\u003e INSERT {?mapper mqtt:topic ?topic} WHERE {?mapper rdf:type mqtt:Mapper}",
       "forcedBindings": {
         "topic": {
           "type": "literal",
@@ -662,7 +673,7 @@
       }
     },
     "LINK_PLACES": {
-      "sparql": "INSERT DATA { GRAPH <http://wot.arces.unibo.it/context> {?root schema:containsPlace ?child . ?child schema:containedInPlace ?root }}",
+      "sparql": "INSERT DATA { GRAPH \u003chttp://wot.arces.unibo.it/context\u003e {?root schema:containsPlace ?child . ?child schema:containedInPlace ?root }}",
       "forcedBindings": {
         "root": {
           "type": "uri",
@@ -770,7 +781,7 @@
       }
     },
     "https://tools.vaimee.com/mqtt/updates/add_mqtt_mapping": {
-      "sparql": "WITH <http://wot.arces.unibo.it/mqtt> DELETE {?mapping ?p ?o} INSERT {_:mapping rdf:type mqtt:Mapping ; mqtt:observation ?observation ; mqtt:topic ?topic} WHERE {OPTIONAL{?mapping rdf:type mqtt:Mapping ; mqtt:observation ?observation ; ?p ?o}}",
+      "sparql": "WITH \u003chttp://wot.arces.unibo.it/mqtt\u003e DELETE {?mapping ?p ?o} INSERT {_:mapping rdf:type mqtt:Mapping ; mqtt:observation ?observation ; mqtt:topic ?topic} WHERE {OPTIONAL{?mapping rdf:type mqtt:Mapping ; mqtt:observation ?observation ; ?p ?o}}",
       "forcedBindings": {
         "topic": {
           "type": "literal",
@@ -783,7 +794,7 @@
       }
     },
     "https://tools.vaimee.com/mqtt_adapter/updates/mqtt_message": {
-      "sparql": "WITH <http://wot.arces.unibo.it/mqtt/message> DELETE {?oldMessage rdf:type mqtt:Message ; mqtt:value ?oldValue ; mqtt:topic ?topic ; mqtt:hasBroker ?broker ; time:inXSDDateTimeStamp ?oldTimestamp} INSERT {_:message rdf:type mqtt:Message ; mqtt:value ?value ; mqtt:topic ?topic ; mqtt:hasBroker ?broker ; time:inXSDDateTimeStamp ?timestamp} WHERE {BIND(now() AS ?timestamp) . OPTIONAL{?oldMessage rdf:type mqtt:Message ; mqtt:value ?oldValue ; mqtt:topic ?topic ; mqtt:hasBroker ?broker ; time:inXSDDateTimeStamp ?oldTimestamp}}",
+      "sparql": "WITH \u003chttp://wot.arces.unibo.it/mqtt/message\u003e DELETE {?oldMessage rdf:type mqtt:Message ; mqtt:value ?oldValue ; mqtt:topic ?topic ; mqtt:hasBroker ?broker ; time:inXSDDateTimeStamp ?oldTimestamp} INSERT {_:message rdf:type mqtt:Message ; mqtt:value ?value ; mqtt:topic ?topic ; mqtt:hasBroker ?broker ; time:inXSDDateTimeStamp ?timestamp} WHERE {BIND(now() AS ?timestamp) . OPTIONAL{?oldMessage rdf:type mqtt:Message ; mqtt:value ?oldValue ; mqtt:topic ?topic ; mqtt:hasBroker ?broker ; time:inXSDDateTimeStamp ?oldTimestamp}}",
       "forcedBindings": {
         "value": {
           "type": "literal",
@@ -800,7 +811,7 @@
       }
     },
     "https://tools.vaimee.com/mqtt_mapper/updates/update_observation_value": {
-      "sparql": "WITH <http://wot.arces.unibo.it/observation> DELETE { ?quantity qudt:numericValue ?oldValue . ?observation sosa:resultTime ?oldTime } INSERT { ?quantity qudt:numericValue ?value . ?observation sosa:resultTime ?timestamp } WHERE {BIND(now() AS ?timestamp) . ?observation rdf:type sosa:Observation ; sosa:hasResult ?quantity . OPTIONAL { ?observation sosa:resultTime ?oldTime . ?quantity qudt:numericValue ?oldValue}}",
+      "sparql": "WITH \u003chttp://wot.arces.unibo.it/observation\u003e DELETE { ?quantity qudt:numericValue ?oldValue . ?observation sosa:resultTime ?oldTime } INSERT { ?quantity qudt:numericValue ?value . ?observation sosa:resultTime ?timestamp } WHERE {BIND(now() AS ?timestamp) . ?observation rdf:type sosa:Observation ; sosa:hasResult ?quantity . OPTIONAL { ?observation sosa:resultTime ?oldTime . ?quantity qudt:numericValue ?oldValue}}",
       "forcedBindings": {
         "observation": {
           "type": "uri",
@@ -835,16 +846,16 @@
       }
     },
     "removeCriteriaBulkOutput": {
-      "sparql": "DELETE {   GRAPH criteria:forecast {     ?observation rdf:type sosa:Observation ;       sosa:phenomenonTime ?ptime;       sosa:hasResult ?result;       ?p ?o .     ?result rdf:type qudt:QuantityValue ;       rdf:type sosa:Result;       ?p1 ?o1   } }WHERE{   GRAPH criteria:forecast {     ?observation rdf:type sosa:Observation ;                  sosa:resultTime ?time;                  sosa:hasResult ?result;                  ?p ?o .     ?result rdf:type qudt:QuantityValue ;             rdf:type sosa:Result;             ?p1 ?o1   }filter(?ptime >= ?startDate)  } "
+      "sparql": "DELETE {   GRAPH criteria:forecast {     ?observation rdf:type sosa:Observation ;       sosa:phenomenonTime ?ptime;       sosa:hasResult ?result;       ?p ?o .     ?result rdf:type qudt:QuantityValue ;       rdf:type sosa:Result;       ?p1 ?o1   } }WHERE{   GRAPH criteria:forecast {     ?observation rdf:type sosa:Observation ;                  sosa:resultTime ?time;                  sosa:hasResult ?result;                  ?p ?o .     ?result rdf:type qudt:QuantityValue ;             rdf:type sosa:Result;             ?p1 ?o1   }filter(?ptime \u003e\u003d ?startDate)  } "
     },
     "removeCriteriaBulkOutputByUnit": {
-      "sparql": "DELETE {   GRAPH criteria:forecast {     ?observation rdf:type sosa:Observation ;  sosa:hasFeatureOfInterest ?id;     sosa:resultTime ?time;       sosa:hasResult ?result;       ?p ?o .     ?result rdf:type qudt:QuantityValue ;       rdf:type sosa:Result;       ?p1 ?o1   } }WHERE{   GRAPH criteria:forecast {     ?observation rdf:type sosa:Observation ;                  sosa:phenomenonTime ?time;                  sosa:hasResult ?result;                  ?p ?o .     ?result rdf:type qudt:QuantityValue ;             rdf:type sosa:Result;             ?p1 ?o1   }filter(?ptime >= ?startDate)  } "
+      "sparql": "DELETE {   GRAPH criteria:forecast {     ?observation rdf:type sosa:Observation ;  sosa:hasFeatureOfInterest ?id;     sosa:resultTime ?time;       sosa:hasResult ?result;       ?p ?o .     ?result rdf:type qudt:QuantityValue ;       rdf:type sosa:Result;       ?p1 ?o1   } }WHERE{   GRAPH criteria:forecast {     ?observation rdf:type sosa:Observation ;                  sosa:phenomenonTime ?time;                  sosa:hasResult ?result;                  ?p ?o .     ?result rdf:type qudt:QuantityValue ;             rdf:type sosa:Result;             ?p1 ?o1   }filter(?ptime \u003e\u003d ?startDate)  } "
     },
     "removeCriteriaOutput": {
-      "sparql": "DELETE {   GRAPH criteria:forecast {     ?observation rdf:type sosa:Observation ;       sosa:resultTime ?time;       sosa:hasResult ?result;       ?p ?o .     ?result rdf:type qudt:QuantityValue ;       rdf:type sosa:Result;       ?p1 ?o1   } }WHERE{   GRAPH criteria:forecast {     ?observation rdf:type sosa:Observation ;                  sosa:resultTime ?time;                  sosa:hasResult ?result;                  ?p ?o .     ?result rdf:type qudt:QuantityValue ;             rdf:type sosa:Result;             ?p1 ?o1   }filter(?time >= ?startDate)  } "
+      "sparql": "DELETE {   GRAPH criteria:forecast {     ?observation rdf:type sosa:Observation ;       sosa:resultTime ?time;       sosa:hasResult ?result;       ?p ?o .     ?result rdf:type qudt:QuantityValue ;       rdf:type sosa:Result;       ?p1 ?o1   } }WHERE{   GRAPH criteria:forecast {     ?observation rdf:type sosa:Observation ;                  sosa:resultTime ?time;                  sosa:hasResult ?result;                  ?p ?o .     ?result rdf:type qudt:QuantityValue ;             rdf:type sosa:Result;             ?p1 ?o1   }filter(?time \u003e\u003d ?startDate)  } "
     },
     "removeCriteriaOutputByUnit": {
-      "sparql": "DELETE {   GRAPH criteria:forecast {     ?observation rdf:type sosa:Observation ;  sosa:hasFeatureOfInterest ?id;     sosa:resultTime ?time;       sosa:hasResult ?result;       ?p ?o .     ?result rdf:type qudt:QuantityValue ;       rdf:type sosa:Result;       ?p1 ?o1   } }WHERE{   GRAPH criteria:forecast {     ?observation rdf:type sosa:Observation ;                  sosa:resultTime ?time;                  sosa:hasResult ?result;                  ?p ?o .     ?result rdf:type qudt:QuantityValue ;             rdf:type sosa:Result;             ?p1 ?o1   }filter(?time >= ?startDate)  } "
+      "sparql": "DELETE {   GRAPH criteria:forecast {     ?observation rdf:type sosa:Observation ;  sosa:hasFeatureOfInterest ?id;     sosa:resultTime ?time;       sosa:hasResult ?result;       ?p ?o .     ?result rdf:type qudt:QuantityValue ;       rdf:type sosa:Result;       ?p1 ?o1   } }WHERE{   GRAPH criteria:forecast {     ?observation rdf:type sosa:Observation ;                  sosa:resultTime ?time;                  sosa:hasResult ?result;                  ?p ?o .     ?result rdf:type qudt:QuantityValue ;             rdf:type sosa:Result;             ?p1 ?o1   }filter(?time \u003e\u003d ?startDate)  } "
     },
     "uploadBulkHistory": {
       "sparql": "INSERT DATA {GRAPH weather:bulkHistory { _:observation rdf:type sosa:Observation ; weather:recordCount ?recordCount; sosa:hasFeatureOfInterest ?feature ; sosa:observedProperty ?property ; sosa:resultTime ?time ;  sosa:hasResult _:result . _:result rdf:type qudt:QuantityValue ; rdf:type sosa:Result; sosa:isResultOf _:observation ; qudt:unit ?unit ; qudt:numericValue ?value}}",
@@ -1013,13 +1024,13 @@
   },
   "queries": {
     "CROP": {
-      "sparql": "SELECT * FROM <http://swamp-project.org/cbec/crop/2021> WHERE {?crop rdf:type swamp2:Crop ; rdf:type agrovoc:c_8171 ; swamp2:hasCropCode ?code ; rdfs:label ?label} ORDER BY ?label"
+      "sparql": "SELECT * FROM \u003chttp://swamp-project.org/cbec/crop/2021\u003e WHERE {?crop rdf:type swamp2:Crop ; rdf:type agrovoc:c_8171 ; swamp2:hasCropCode ?code ; rdfs:label ?label} ORDER BY ?label"
     },
     "FIELD": {
-      "sparql": "SELECT * FROM <http://swamp-project.org/cbec/field/2021> FROM <http://swamp-project.org/cbec/crop> WHERE {?fieldUri rdf:type <http://swamp-project.org/ontology/swamp#Field> ; <http://swamp-project.org/ontology/swamp#hasGeometry> ?geometry ; <http://swamp-project.org/ontology/swamp#hasCanal> ?canalUri ; <http://swamp-project.org/ontology/swamp#hasCrop> ?cropUri ; <http://swamp-project.org/ontology/swamp#managedBy> ?farmerUri . ?cropUri rdfs:label ?cropLabel}"
+      "sparql": "SELECT * FROM \u003chttp://swamp-project.org/cbec/field/2021\u003e FROM \u003chttp://swamp-project.org/cbec/crop\u003e WHERE {?fieldUri rdf:type \u003chttp://swamp-project.org/ontology/swamp#Field\u003e ; \u003chttp://swamp-project.org/ontology/swamp#hasGeometry\u003e ?geometry ; \u003chttp://swamp-project.org/ontology/swamp#hasCanal\u003e ?canalUri ; \u003chttp://swamp-project.org/ontology/swamp#hasCrop\u003e ?cropUri ; \u003chttp://swamp-project.org/ontology/swamp#managedBy\u003e ?farmerUri . ?cropUri rdfs:label ?cropLabel}"
     },
     "FORECAST_N_DAYS": {
-      "sparql": "SELECT * WHERE {OPTIONAL {?unit qudt:symbol ?symbol} graph <http://wot.arces.unibo.it/forecast/criteria> {?obs sosa:hasFeatureOfInterest ?place ; rdf:type swamp:Forecast ; sosa:resultTime ?resultTime ; sosa:phenomenonTime ?timestamp ; sosa:observedProperty ?property ; sosa:hasResult ?res . ?res qudt:numericValue ?value ; qudt:unit ?unit BIND((xsd:dateTime(substr(xsd:string(?timestamp),1,10)) - xsd:dateTime(substr(xsd:string(?resultTime),1,10)))/86400 AS ?diff) FILTER (xsd:dateTime(?resultTime) >= xsd:dateTime(concat(?from,'T00:00:00Z')) && xsd:dateTime(?resultTime) <= xsd:dateTime(concat(?to,'T23:59:59Z')) && (?diff = xsd:integer(?n)) )}} ORDER BY xsd:dateTime(?timestamp)",
+      "sparql": "SELECT * WHERE {OPTIONAL {?unit qudt:symbol ?symbol} graph \u003chttp://wot.arces.unibo.it/forecast/criteria\u003e {?obs sosa:hasFeatureOfInterest ?place ; rdf:type swamp:Forecast ; sosa:resultTime ?resultTime ; sosa:phenomenonTime ?timestamp ; sosa:observedProperty ?property ; sosa:hasResult ?res . ?res qudt:numericValue ?value ; qudt:unit ?unit BIND((xsd:dateTime(substr(xsd:string(?timestamp),1,10)) - xsd:dateTime(substr(xsd:string(?resultTime),1,10)))/86400 AS ?diff) FILTER (xsd:dateTime(?resultTime) \u003e\u003d xsd:dateTime(concat(?from,\u0027T00:00:00Z\u0027)) \u0026\u0026 xsd:dateTime(?resultTime) \u003c\u003d xsd:dateTime(concat(?to,\u0027T23:59:59Z\u0027)) \u0026\u0026 (?diff \u003d xsd:integer(?n)) )}} ORDER BY xsd:dateTime(?timestamp)",
       "forcedBindings": {
         "from": {
           "type": "literal",
@@ -1044,7 +1055,7 @@
       }
     },
     "FORECAST_IRRIGATION": {
-      "sparql": "SELECT DISTINCT ?value ?symbol WHERE {graph <http://wot.arces.unibo.it/forecast/criteria> {?obs sosa:hasFeatureOfInterest ?place ; rdf:type swamp:Forecast; sosa:resultTime ?resultTime ; sosa:phenomenonTime ?prediction ; sosa:observedProperty swamp:IrrigationNeeds ; sosa:hasResult ?res . ?res qudt:numericValue ?value ; qudt:unit ?unit} . OPTIONAL {?unit qudt:symbol ?symbol} FILTER (xsd:dateTime(?resultTime) = xsd:dateTime(concat(?from ,'T00:00:00Z')) && xsd:dateTime(?prediction) = xsd:dateTime(concat(?to ,'T00:00:00Z')))}",
+      "sparql": "SELECT DISTINCT ?value ?symbol WHERE {graph \u003chttp://wot.arces.unibo.it/forecast/criteria\u003e {?obs sosa:hasFeatureOfInterest ?place ; rdf:type swamp:Forecast; sosa:resultTime ?resultTime ; sosa:phenomenonTime ?prediction ; sosa:observedProperty swamp:IrrigationNeeds ; sosa:hasResult ?res . ?res qudt:numericValue ?value ; qudt:unit ?unit} . OPTIONAL {?unit qudt:symbol ?symbol} FILTER (xsd:dateTime(?resultTime) \u003d xsd:dateTime(concat(?from ,\u0027T00:00:00Z\u0027)) \u0026\u0026 xsd:dateTime(?prediction) \u003d xsd:dateTime(concat(?to ,\u0027T00:00:00Z\u0027)))}",
       "forcedBindings": {
         "from": {
           "type": "literal",
@@ -1061,7 +1072,7 @@
       }
     },
     "FORECAST_WATER_CONTENT": {
-      "sparql": "SELECT DISTINCT ?value ?symbol WHERE {graph <http://wot.arces.unibo.it/forecast/criteria> {?obs sosa:hasFeatureOfInterest ?place ; rdf:type swamp:Forecast; sosa:resultTime ?resultTime ; sosa:phenomenonTime ?prediction ; sosa:observedProperty swamp:WaterContentProfile ; sosa:hasResult ?res . ?res qudt:numericValue ?value ; qudt:unit ?unit} . OPTIONAL {?unit qudt:symbol ?symbol} FILTER (xsd:dateTime(?resultTime) = xsd:dateTime(concat(?from ,'T00:00:00Z')) && xsd:dateTime(?prediction) = xsd:dateTime(concat(?to ,'T00:00:00Z')))}",
+      "sparql": "SELECT DISTINCT ?value ?symbol WHERE {graph \u003chttp://wot.arces.unibo.it/forecast/criteria\u003e {?obs sosa:hasFeatureOfInterest ?place ; rdf:type swamp:Forecast; sosa:resultTime ?resultTime ; sosa:phenomenonTime ?prediction ; sosa:observedProperty swamp:WaterContentProfile ; sosa:hasResult ?res . ?res qudt:numericValue ?value ; qudt:unit ?unit} . OPTIONAL {?unit qudt:symbol ?symbol} FILTER (xsd:dateTime(?resultTime) \u003d xsd:dateTime(concat(?from ,\u0027T00:00:00Z\u0027)) \u0026\u0026 xsd:dateTime(?prediction) \u003d xsd:dateTime(concat(?to ,\u0027T00:00:00Z\u0027)))}",
       "forcedBindings": {
         "from": {
           "type": "literal",
@@ -1078,7 +1089,7 @@
       }
     },
     "FORECAST_DEFICIT": {
-      "sparql": "SELECT DISTINCT ?value ?symbol WHERE {graph <http://wot.arces.unibo.it/forecast/criteria> {?obs sosa:hasFeatureOfInterest ?place ; rdf:type swamp:Forecast; sosa:resultTime ?resultTime ; sosa:phenomenonTime ?prediction ; sosa:observedProperty swamp:DeficitProfile ; sosa:hasResult ?res . ?res qudt:numericValue ?value ; qudt:unit ?unit} . OPTIONAL {?unit qudt:symbol ?symbol} FILTER (xsd:dateTime(?resultTime) = xsd:dateTime(concat(?from ,'T00:00:00Z')) && xsd:dateTime(?prediction) = xsd:dateTime(concat(?to ,'T00:00:00Z')))}",
+      "sparql": "SELECT DISTINCT ?value ?symbol WHERE {graph \u003chttp://wot.arces.unibo.it/forecast/criteria\u003e {?obs sosa:hasFeatureOfInterest ?place ; rdf:type swamp:Forecast; sosa:resultTime ?resultTime ; sosa:phenomenonTime ?prediction ; sosa:observedProperty swamp:DeficitProfile ; sosa:hasResult ?res . ?res qudt:numericValue ?value ; qudt:unit ?unit} . OPTIONAL {?unit qudt:symbol ?symbol} FILTER (xsd:dateTime(?resultTime) \u003d xsd:dateTime(concat(?from ,\u0027T00:00:00Z\u0027)) \u0026\u0026 xsd:dateTime(?prediction) \u003d xsd:dateTime(concat(?to ,\u0027T00:00:00Z\u0027)))}",
       "forcedBindings": {
         "from": {
           "type": "literal",
@@ -1095,7 +1106,7 @@
       }
     },
     "FORECAST_THRESHOLD": {
-      "sparql": "SELECT DISTINCT ?value ?symbol WHERE {graph <http://wot.arces.unibo.it/forecast/criteria> {?obs sosa:hasFeatureOfInterest ?place ; rdf:type swamp:Forecast; sosa:resultTime ?resultTime ; sosa:phenomenonTime ?prediction ; sosa:observedProperty swamp:Threshold ; sosa:hasResult ?res . ?res qudt:numericValue ?value ; qudt:unit ?unit} . OPTIONAL {?unit qudt:symbol ?symbol} FILTER (xsd:dateTime(?resultTime) = xsd:dateTime(concat(?from ,'T00:00:00Z')) && xsd:dateTime(?prediction) = xsd:dateTime(concat(?to ,'T00:00:00Z')))}",
+      "sparql": "SELECT DISTINCT ?value ?symbol WHERE {graph \u003chttp://wot.arces.unibo.it/forecast/criteria\u003e {?obs sosa:hasFeatureOfInterest ?place ; rdf:type swamp:Forecast; sosa:resultTime ?resultTime ; sosa:phenomenonTime ?prediction ; sosa:observedProperty swamp:Threshold ; sosa:hasResult ?res . ?res qudt:numericValue ?value ; qudt:unit ?unit} . OPTIONAL {?unit qudt:symbol ?symbol} FILTER (xsd:dateTime(?resultTime) \u003d xsd:dateTime(concat(?from ,\u0027T00:00:00Z\u0027)) \u0026\u0026 xsd:dateTime(?prediction) \u003d xsd:dateTime(concat(?to ,\u0027T00:00:00Z\u0027)))}",
       "forcedBindings": {
         "from": {
           "type": "literal",
@@ -1112,7 +1123,7 @@
       }
     },
     "FORECAST_LAI": {
-      "sparql": "SELECT DISTINCT ?value ?symbol WHERE {graph <http://wot.arces.unibo.it/forecast/criteria> {?obs sosa:hasFeatureOfInterest ?place ; rdf:type swamp:Forecast; sosa:resultTime ?resultTime ; sosa:phenomenonTime ?prediction ; sosa:observedProperty swamp:LeafAreaIndex ; sosa:hasResult ?res . ?res qudt:numericValue ?value ; qudt:unit ?unit} . OPTIONAL{?unit qudt:symbol ?symbol} FILTER (xsd:dateTime(?resultTime) = xsd:dateTime(concat(?from ,'T00:00:00Z')) && xsd:dateTime(?prediction) = xsd:dateTime(concat(?to ,'T00:00:00Z')))}",
+      "sparql": "SELECT DISTINCT ?value ?symbol WHERE {graph \u003chttp://wot.arces.unibo.it/forecast/criteria\u003e {?obs sosa:hasFeatureOfInterest ?place ; rdf:type swamp:Forecast; sosa:resultTime ?resultTime ; sosa:phenomenonTime ?prediction ; sosa:observedProperty swamp:LeafAreaIndex ; sosa:hasResult ?res . ?res qudt:numericValue ?value ; qudt:unit ?unit} . OPTIONAL{?unit qudt:symbol ?symbol} FILTER (xsd:dateTime(?resultTime) \u003d xsd:dateTime(concat(?from ,\u0027T00:00:00Z\u0027)) \u0026\u0026 xsd:dateTime(?prediction) \u003d xsd:dateTime(concat(?to ,\u0027T00:00:00Z\u0027)))}",
       "forcedBindings": {
         "from": {
           "type": "literal",
@@ -1129,7 +1140,7 @@
       }
     },
     "FORECAST_WEATHER_TEMPERATURE": {
-      "sparql": "SELECT DISTINCT ?symbol (MAX(?value) AS ?max) (MIN(?value) AS ?min) (AVG(?value) AS ?avg) WHERE {graph <http://wot.arces.unibo.it/forecast> {?obs sosa:hasFeatureOfInterest ?place ; rdf:type swamp:Forecast ; sosa:resultTime ?resultTime ; sosa:phenomenonTime ?prediction ; sosa:observedProperty arces-monitor:AirTemperature ; sosa:hasResult ?res . ?res qudt:numericValue ?value ; qudt:unit ?unit } . OPTIONAL {?unit qudt:symbol ?symbol } FILTER (xsd:dateTime(?resultTime) > xsd:dateTime(concat(?from ,'T00:00:00Z')) && xsd:dateTime(?resultTime) < xsd:dateTime(concat(?from ,'T23:59:59Z')) && xsd:dateTime(?prediction) > xsd:dateTime(concat(?to ,'T00:00:00Z')) && xsd:dateTime(?prediction) < xsd:dateTime(concat(?to ,'T23:59:59Z')))} GROUP BY ?symbol",
+      "sparql": "SELECT DISTINCT ?symbol (MAX(?value) AS ?max) (MIN(?value) AS ?min) (AVG(?value) AS ?avg) WHERE {graph \u003chttp://wot.arces.unibo.it/forecast\u003e {?obs sosa:hasFeatureOfInterest ?place ; rdf:type swamp:Forecast ; sosa:resultTime ?resultTime ; sosa:phenomenonTime ?prediction ; sosa:observedProperty arces-monitor:AirTemperature ; sosa:hasResult ?res . ?res qudt:numericValue ?value ; qudt:unit ?unit } . OPTIONAL {?unit qudt:symbol ?symbol } FILTER (xsd:dateTime(?resultTime) \u003e xsd:dateTime(concat(?from ,\u0027T00:00:00Z\u0027)) \u0026\u0026 xsd:dateTime(?resultTime) \u003c xsd:dateTime(concat(?from ,\u0027T23:59:59Z\u0027)) \u0026\u0026 xsd:dateTime(?prediction) \u003e xsd:dateTime(concat(?to ,\u0027T00:00:00Z\u0027)) \u0026\u0026 xsd:dateTime(?prediction) \u003c xsd:dateTime(concat(?to ,\u0027T23:59:59Z\u0027)))} GROUP BY ?symbol",
       "forcedBindings": {
         "from": {
           "type": "literal",
@@ -1146,7 +1157,7 @@
       }
     },
     "FORECAST_WEATHER_PRECIPITATION": {
-      "sparql": "SELECT DISTINCT ?symbol (SUM(?value) AS ?sum) WHERE {graph <http://wot.arces.unibo.it/forecast> {?obs sosa:hasFeatureOfInterest ?place ; rdf:type swamp:Forecast ; sosa:resultTime ?resultTime ; sosa:phenomenonTime ?prediction ; sosa:observedProperty arces-monitor:Precipitation ; sosa:hasResult ?res . ?res qudt:numericValue ?value ; qudt:unit ?unit } . OPTIONAL {?unit qudt:symbol ?symbol}  FILTER (xsd:dateTime(?resultTime) > xsd:dateTime(concat(?from ,'T00:00:00Z')) && xsd:dateTime(?resultTime) < xsd:dateTime(concat(?from ,'T23:59:59Z')) && xsd:dateTime(?prediction) > xsd:dateTime(concat(?to ,'T00:00:00Z')) && xsd:dateTime(?prediction) < xsd:dateTime(concat(?to ,'T23:59:59Z')))} GROUP BY ?symbol",
+      "sparql": "SELECT DISTINCT ?symbol (SUM(?value) AS ?sum) WHERE {graph \u003chttp://wot.arces.unibo.it/forecast\u003e {?obs sosa:hasFeatureOfInterest ?place ; rdf:type swamp:Forecast ; sosa:resultTime ?resultTime ; sosa:phenomenonTime ?prediction ; sosa:observedProperty arces-monitor:Precipitation ; sosa:hasResult ?res . ?res qudt:numericValue ?value ; qudt:unit ?unit } . OPTIONAL {?unit qudt:symbol ?symbol}  FILTER (xsd:dateTime(?resultTime) \u003e xsd:dateTime(concat(?from ,\u0027T00:00:00Z\u0027)) \u0026\u0026 xsd:dateTime(?resultTime) \u003c xsd:dateTime(concat(?from ,\u0027T23:59:59Z\u0027)) \u0026\u0026 xsd:dateTime(?prediction) \u003e xsd:dateTime(concat(?to ,\u0027T00:00:00Z\u0027)) \u0026\u0026 xsd:dateTime(?prediction) \u003c xsd:dateTime(concat(?to ,\u0027T23:59:59Z\u0027)))} GROUP BY ?symbol",
       "forcedBindings": {
         "from": {
           "type": "literal",
@@ -1163,10 +1174,10 @@
       }
     },
     "MQTT_MAPPINGS": {
-      "sparql": "SELECT * {GRAPH <http://wot.arces.unibo.it/mqtt> {?mapping rdf:type mqtt:Mapping ; mqtt:observation ?observation ; mqtt:topic ?topic}}"
+      "sparql": "SELECT * {GRAPH \u003chttp://wot.arces.unibo.it/mqtt\u003e {?mapping rdf:type mqtt:Mapping ; mqtt:observation ?observation ; mqtt:topic ?topic}}"
     },
     "MQTT_MAPPER": {
-      "sparql": "SELECT DISTINCT ?regex ?topic {GRAPH <http://wot.arces.unibo.it/mqtt> {?mapper rdf:type mqtt:Mapper ; mqtt:regex ?regex ; mqtt:topic ?topic}}",
+      "sparql": "SELECT DISTINCT ?regex ?topic {GRAPH \u003chttp://wot.arces.unibo.it/mqtt\u003e {?mapper rdf:type mqtt:Mapper ; mqtt:regex ?regex ; mqtt:topic ?topic}}",
       "forcedBindings": {
         "mapper": {
           "type": "uri",
@@ -1175,13 +1186,13 @@
       }
     },
     "MQTT_MAPPERS_TOPICS": {
-      "sparql": "SELECT DISTINCT ?topic {GRAPH <http://wot.arces.unibo.it/mqtt> {?mapper rdf:type mqtt:Mapper ; mqtt:regex ?regex ; mqtt:topic ?topic}}"
+      "sparql": "SELECT DISTINCT ?topic {GRAPH \u003chttp://wot.arces.unibo.it/mqtt\u003e {?mapper rdf:type mqtt:Mapper ; mqtt:regex ?regex ; mqtt:topic ?topic}}"
     },
     "MQTT_BROKERS": {
-      "sparql": "SELECT * WHERE { GRAPH <http://wot.arces.unibo.it/mqtt> {?broker mqtt:url ?url ; rdf:type mqtt:Broker ; mqtt:port ?port ; mqtt:ssl ?ssl . OPTIONAL {?broker mqtt:user ?user ; mqtt:password ?password}}}"
+      "sparql": "SELECT * WHERE { GRAPH \u003chttp://wot.arces.unibo.it/mqtt\u003e {?broker mqtt:url ?url ; rdf:type mqtt:Broker ; mqtt:port ?port ; mqtt:ssl ?ssl . OPTIONAL {?broker mqtt:user ?user ; mqtt:password ?password}}}"
     },
     "MQTT_BROKER_TOPICS": {
-      "sparql": "SELECT ?topic WHERE { GRAPH <http://wot.arces.unibo.it/mqtt> {?broker mqtt:url ?url ; rdf:type mqtt:Broker ; mqtt:port ?port ; mqtt:topic ?topic}}",
+      "sparql": "SELECT ?topic WHERE { GRAPH \u003chttp://wot.arces.unibo.it/mqtt\u003e {?broker mqtt:url ?url ; rdf:type mqtt:Broker ; mqtt:port ?port ; mqtt:topic ?topic}}",
       "forcedBindings": {
         "url": {
           "type": "literal",
@@ -1195,7 +1206,7 @@
       }
     },
     "LOG_QUANTITY": {
-      "sparql": "SELECT * WHERE {GRAPH ?observation {?result qudt:numericValue ?value; time:inXSDDateTimeStamp ?timestamp} FILTER (xsd:dateTime(?timestamp) > xsd:dateTime(?from) && xsd:dateTime(?timestamp) < xsd:dateTime(?to))} ORDER BY xsd:dateTime(?timestamp)",
+      "sparql": "SELECT * WHERE {GRAPH ?observation {?result qudt:numericValue ?value; time:inXSDDateTimeStamp ?timestamp} FILTER (xsd:dateTime(?timestamp) \u003e xsd:dateTime(?from) \u0026\u0026 xsd:dateTime(?timestamp) \u003c xsd:dateTime(?to))} ORDER BY xsd:dateTime(?timestamp)",
       "forcedBindings": {
         "from": {
           "datatype": "xsd:dateTime",
@@ -1214,7 +1225,7 @@
       }
     },
     "LOG_QUANTITY_SLOW": {
-      "sparql": "SELECT * WHERE {GRAPH <http://wot.arces.unibo.it/observation/history> {?result sosa:isResultOf ?observation ; qudt:numericValue ?value; time:inXSDDateTimeStamp ?timestamp} FILTER (xsd:dateTime(?timestamp) > xsd:dateTime(?from) && xsd:dateTime(?timestamp) < xsd:dateTime(?to))} ORDER BY xsd:dateTime(?timestamp)",
+      "sparql": "SELECT * WHERE {GRAPH \u003chttp://wot.arces.unibo.it/observation/history\u003e {?result sosa:isResultOf ?observation ; qudt:numericValue ?value; time:inXSDDateTimeStamp ?timestamp} FILTER (xsd:dateTime(?timestamp) \u003e xsd:dateTime(?from) \u0026\u0026 xsd:dateTime(?timestamp) \u003c xsd:dateTime(?to))} ORDER BY xsd:dateTime(?timestamp)",
       "forcedBindings": {
         "from": {
           "datatype": "xsd:dateTime",
@@ -1233,19 +1244,19 @@
       }
     },
     "PLACES": {
-      "sparql": "SELECT * WHERE {GRAPH <http://wot.arces.unibo.it/context> {?place rdf:type schema:Place; schema:name ?name ;  schema:GeoCoordinates ?coordinate . ?coordinate schema:latitude ?lat ; schema:longitude ?long}} ORDER BY DESC(?name)"
+      "sparql": "SELECT * WHERE {GRAPH \u003chttp://wot.arces.unibo.it/context\u003e {?place rdf:type schema:Place; schema:name ?name ;  schema:GeoCoordinates ?coordinate . ?coordinate schema:latitude ?lat ; schema:longitude ?long}} ORDER BY DESC(?name)"
     },
     "NO_CHILD": {
-      "sparql": "SELECT * WHERE {GRAPH <http://wot.arces.unibo.it/context> {?root rdf:type schema:Place ; schema:name ?name . FILTER NOT EXISTS{?child schema:containedInPlace ?root}}}"
+      "sparql": "SELECT * WHERE {GRAPH \u003chttp://wot.arces.unibo.it/context\u003e {?root rdf:type schema:Place ; schema:name ?name . FILTER NOT EXISTS{?child schema:containedInPlace ?root}}}"
     },
     "MAP_PLACES": {
-      "sparql": "SELECT * WHERE {GRAPH <http://wot.arces.unibo.it/context> {?root rdf:type schema:Place; schema:name ?name ;  schema:GeoCoordinates ?coordinate . ?coordinate schema:latitude ?lat ; schema:longitude ?long.  FILTER NOT EXISTS{?root schema:containedInPlace ?place}}} ORDER BY DESC(?name)"
+      "sparql": "SELECT * WHERE {GRAPH \u003chttp://wot.arces.unibo.it/context\u003e {?root rdf:type schema:Place; schema:name ?name ;  schema:GeoCoordinates ?coordinate . ?coordinate schema:latitude ?lat ; schema:longitude ?long.  FILTER NOT EXISTS{?root schema:containedInPlace ?place}}} ORDER BY DESC(?name)"
     },
     "MAP_GROUPS": {
-      "sparql": "SELECT * WHERE {GRAPH <http://wot.arces.unibo.it/context> {?root rdf:type schema:Place; rdf:type ?group ; schema:name ?name ;  schema:GeoCoordinates ?coordinate . ?coordinate schema:latitude ?lat ; schema:longitude ?long . ?group rdfs:label ?label   FILTER NOT EXISTS{?root schema:containedInPlace ?place}}}"
+      "sparql": "SELECT * WHERE {GRAPH \u003chttp://wot.arces.unibo.it/context\u003e {?root rdf:type schema:Place; rdf:type ?group ; schema:name ?name ;  schema:GeoCoordinates ?coordinate . ?coordinate schema:latitude ?lat ; schema:longitude ?long . ?group rdfs:label ?label   FILTER NOT EXISTS{?root schema:containedInPlace ?place}}}"
     },
     "CONTAINED_PLACES": {
-      "sparql": "SELECT * WHERE {GRAPH <http://wot.arces.unibo.it/context> {?root schema:containsPlace ?child . ?child schema:name ?name}} ORDER BY DESC(?name)",
+      "sparql": "SELECT * WHERE {GRAPH \u003chttp://wot.arces.unibo.it/context\u003e {?root schema:containsPlace ?child . ?child schema:name ?name}} ORDER BY DESC(?name)",
       "forcedBindings": {
         "root": {
           "type": "uri",
@@ -1254,16 +1265,16 @@
       }
     },
     "ROOT_PLACES": {
-      "sparql": "SELECT * WHERE {GRAPH <http://wot.arces.unibo.it/context> {?root rdf:type schema:Place . ?root schema:name ?name .  FILTER NOT EXISTS{?root schema:containedInPlace ?place} }} ORDER BY DESC(?name)"
+      "sparql": "SELECT * WHERE {GRAPH \u003chttp://wot.arces.unibo.it/context\u003e {?root rdf:type schema:Place . ?root schema:name ?name .  FILTER NOT EXISTS{?root schema:containedInPlace ?place} }} ORDER BY DESC(?name)"
     },
     "OBSERVATIONS": {
-      "sparql": "SELECT * FROM <http://wot.arces.unibo.it/observation/2021> FROM <http://qudt.org> FROM <http://swamp-project.org/observation/cbec> FROM <http://wot.arces.unibo.it/observation> FROM <http://wot.arces.unibo.it/context> WHERE {?observation rdf:type sosa:Observation ; rdfs:label ?label ; sosa:hasResult ?quantity ; sosa:hasFeatureOfInterest ?location . ?location rdf:type schema:Place ; schema:name ?name ; schema:GeoCoordinates ?coordinate . ?coordinate schema:latitude ?lat ; schema:longitude ?long . ?quantity rdf:type qudt:QuantityValue ; qudt:unit ?unit . OPTIONAL {?quantity qudt:numericValue ?value} . OPTIONAL {?observation sosa:resultTime ?timestamp} . ?location schema:name ?name . OPTIONAL{?unit <http://qudt.org/schema/qudt/symbol> ?symbol}} ORDER BY ?label"
+      "sparql": "SELECT * FROM \u003chttp://wot.arces.unibo.it/observation/2021\u003e FROM \u003chttp://qudt.org\u003e FROM \u003chttp://swamp-project.org/observation/cbec\u003e FROM \u003chttp://wot.arces.unibo.it/observation\u003e FROM \u003chttp://wot.arces.unibo.it/context\u003e WHERE {?observation rdf:type sosa:Observation ; rdfs:label ?label ; sosa:hasResult ?quantity ; sosa:hasFeatureOfInterest ?location . ?location rdf:type schema:Place ; schema:name ?name ; schema:GeoCoordinates ?coordinate . ?coordinate schema:latitude ?lat ; schema:longitude ?long . ?quantity rdf:type qudt:QuantityValue ; qudt:unit ?unit . OPTIONAL {?quantity qudt:numericValue ?value} . OPTIONAL {?observation sosa:resultTime ?timestamp} . ?location schema:name ?name . OPTIONAL{?unit \u003chttp://qudt.org/schema/qudt/symbol\u003e ?symbol}} ORDER BY ?label"
     },
     "OBSERVATIONS_OLD": {
-      "sparql": "SELECT * WHERE {?unit qudt:symbol ?symbol . GRAPH <http://wot.arces.unibo.it/context> {?location rdf:type schema:Place ; schema:name ?name ; schema:GeoCoordinates ?coordinate . ?coordinate schema:latitude ?lat ; schema:longitude ?long}.GRAPH <http://wot.arces.unibo.it/observation> {?observation rdf:type sosa:Observation ; rdfs:label ?label ; sosa:hasResult ?quantity ; sosa:hasFeatureOfInterest ?location . ?quantity rdf:type qudt:QuantityValue ; qudt:unit ?unit . OPTIONAL {?quantity qudt:numericValue ?value} . OPTIONAL {?observation sosa:resultTime ?timestamp}}}"
+      "sparql": "SELECT * WHERE {?unit qudt:symbol ?symbol . GRAPH \u003chttp://wot.arces.unibo.it/context\u003e {?location rdf:type schema:Place ; schema:name ?name ; schema:GeoCoordinates ?coordinate . ?coordinate schema:latitude ?lat ; schema:longitude ?long}.GRAPH \u003chttp://wot.arces.unibo.it/observation\u003e {?observation rdf:type sosa:Observation ; rdfs:label ?label ; sosa:hasResult ?quantity ; sosa:hasFeatureOfInterest ?location . ?quantity rdf:type qudt:QuantityValue ; qudt:unit ?unit . OPTIONAL {?quantity qudt:numericValue ?value} . OPTIONAL {?observation sosa:resultTime ?timestamp}}}"
     },
     "OBSERVATIONS_BY_LOCATION": {
-      "sparql": "SELECT * FROM <http://wot.arces.unibo.it/observation/2021> FROM <http://swamp-project.org/observation/cbec> FROM <http://wot.arces.unibo.it/observation> WHERE {?observation sosa:hasFeatureOfInterest ?location ; rdf:type sosa:Observation ; rdfs:label ?label ; sosa:hasResult ?quantity . ?quantity rdf:type qudt:QuantityValue ; qudt:unit ?unit . OPTIONAL {?quantity qudt:numericValue ?value} . OPTIONAL {?observation sosa:resultTime ?timestamp}} ORDER BY ?label",
+      "sparql": "SELECT * FROM \u003chttp://wot.arces.unibo.it/observation/2021\u003e FROM \u003chttp://swamp-project.org/observation/cbec\u003e FROM \u003chttp://wot.arces.unibo.it/observation\u003e WHERE {?observation sosa:hasFeatureOfInterest ?location ; rdf:type sosa:Observation ; rdfs:label ?label ; sosa:hasResult ?quantity . ?quantity rdf:type qudt:QuantityValue ; qudt:unit ?unit . OPTIONAL {?quantity qudt:numericValue ?value} . OPTIONAL {?observation sosa:resultTime ?timestamp}} ORDER BY ?label",
       "forcedBindings": {
         "location": {
           "type": "uri",
@@ -1272,7 +1283,7 @@
       }
     },
     "OBSERVATIONS_BY_UNIT": {
-      "sparql": "SELECT * FROM <http://swamp-project.org/observation/cbec> FROM <http://wot.arces.unibo.it/observation> WHERE {?observation rdf:type sosa:Observation ; rdfs:label ?label ; sosa:hasFeatureOfInterest ?location ; sosa:hasResult ?quantity . ?quantity rdf:type qudt:QuantityValue ; qudt:unit ?unit . OPTIONAL {?quantity qudt:numericValue ?value} . OPTIONAL {?observation sosa:resultTime ?timestamp}}",
+      "sparql": "SELECT * FROM \u003chttp://swamp-project.org/observation/cbec\u003e FROM \u003chttp://wot.arces.unibo.it/observation\u003e WHERE {?observation rdf:type sosa:Observation ; rdfs:label ?label ; sosa:hasFeatureOfInterest ?location ; sosa:hasResult ?quantity . ?quantity rdf:type qudt:QuantityValue ; qudt:unit ?unit . OPTIONAL {?quantity qudt:numericValue ?value} . OPTIONAL {?observation sosa:resultTime ?timestamp}}",
       "forcedBindings": {
         "unit": {
           "type": "uri",
@@ -1281,7 +1292,7 @@
       }
     },
     "ALL_VALUES": {
-      "sparql": "SELECT * FROM <http://swamp-project.org/observation/cbec> FROM <http://wot.arces.unibo.it/observation> WHERE {?observation rdf:type sosa:Observation ; rdfs:label ?label ; sosa:hasFeatureOfInterest ?location ; sosa:hasResult ?quantity . ?quantity rdf:type qudt:QuantityValue ; qudt:unit ?unit OPTIONAL {?quantity qudt:numericValue ?value} . OPTIONAL {?observation sosa:resultTime ?timestamp}}",
+      "sparql": "SELECT * FROM \u003chttp://swamp-project.org/observation/cbec\u003e FROM \u003chttp://wot.arces.unibo.it/observation\u003e WHERE {?observation rdf:type sosa:Observation ; rdfs:label ?label ; sosa:hasFeatureOfInterest ?location ; sosa:hasResult ?quantity . ?quantity rdf:type qudt:QuantityValue ; qudt:unit ?unit OPTIONAL {?quantity qudt:numericValue ?value} . OPTIONAL {?observation sosa:resultTime ?timestamp}}",
       "forcedBindings": {
         "observation": {
           "type": "uri",
@@ -1290,13 +1301,13 @@
       }
     },
     "MQTT_TOPICS_COUNT": {
-      "sparql": "SELECT (COUNT(DISTINCT ?topic) AS ?topics) WHERE {GRAPH <http://wot.arces.unibo.it/mqtt/message> {?message rdf:type mqtt:Message ; mqtt:topic ?topic}}"
+      "sparql": "SELECT (COUNT(DISTINCT ?topic) AS ?topics) WHERE {GRAPH \u003chttp://wot.arces.unibo.it/mqtt/message\u003e {?message rdf:type mqtt:Message ; mqtt:topic ?topic}}"
     },
     "MQTT_TOPICS": {
-      "sparql": "SELECT DISTINCT * WHERE {GRAPH <http://wot.arces.unibo.it/mqtt/message> {?message rdf:type mqtt:Message ; mqtt:topic ?topic ; mqtt:hasBroker ?broker}}"
+      "sparql": "SELECT DISTINCT * WHERE {GRAPH \u003chttp://wot.arces.unibo.it/mqtt/message\u003e {?message rdf:type mqtt:Message ; mqtt:topic ?topic ; mqtt:hasBroker ?broker}}"
     },
     "MQTT_TOPIC_VALUE": {
-      "sparql": "SELECT * WHERE {GRAPH <http://wot.arces.unibo.it/mqtt/message> {?message rdf:type mqtt:Message ; mqtt:topic ?topic; mqtt:value ?value}}",
+      "sparql": "SELECT * WHERE {GRAPH \u003chttp://wot.arces.unibo.it/mqtt/message\u003e {?message rdf:type mqtt:Message ; mqtt:topic ?topic; mqtt:value ?value}}",
       "forcedBindings": {
         "topic": {
           "type": "literal",
@@ -1305,25 +1316,25 @@
       }
     },
     "MQTT_MESSAGES": {
-      "sparql": "SELECT * WHERE {GRAPH <http://wot.arces.unibo.it/mqtt/message> {?message rdf:type mqtt:Message ; mqtt:value ?value ; mqtt:topic ?topic ; mqtt:hasBroker ?broker;  time:inXSDDateTimeStamp ?timestamp}}"
+      "sparql": "SELECT * WHERE {GRAPH \u003chttp://wot.arces.unibo.it/mqtt/message\u003e {?message rdf:type mqtt:Message ; mqtt:value ?value ; mqtt:topic ?topic ; mqtt:hasBroker ?broker;  time:inXSDDateTimeStamp ?timestamp}}"
     },
     "HISTORICAL_TRIPLES": {
-      "sparql": "SELECT (COUNT(?log) AS ?count) WHERE {GRAPH <http://wot.arces.unibo.it/observation/history> {?log ?x ?y}}"
+      "sparql": "SELECT (COUNT(?log) AS ?count) WHERE {GRAPH \u003chttp://wot.arces.unibo.it/observation/history\u003e {?log ?x ?y}}"
     },
     "LIVE_TRIPLES": {
-      "sparql": "SELECT (COUNT(?log) AS ?count) FROM <http://swamp-project.org/observation/cbec> FROM <http://wot.arces.unibo.it/observation> WHERE {?log ?x ?y}"
+      "sparql": "SELECT (COUNT(?log) AS ?count) FROM \u003chttp://swamp-project.org/observation/cbec\u003e FROM \u003chttp://wot.arces.unibo.it/observation\u003e WHERE {?log ?x ?y}"
     },
     "PLACES_COUNT": {
-      "sparql": "SELECT (COUNT(?place) AS ?count) WHERE {GRAPH <http://wot.arces.unibo.it/context> {?place rdf:type schema:Place}}"
+      "sparql": "SELECT (COUNT(?place) AS ?count) WHERE {GRAPH \u003chttp://wot.arces.unibo.it/context\u003e {?place rdf:type schema:Place}}"
     },
     "OBSERVATIONS_COUNT": {
-      "sparql": "SELECT (COUNT(?observation) AS ?count) FROM <http://swamp-project.org/observation/cbec> FROM <http://wot.arces.unibo.it/observation> FROM <http://wot.arces.unibo.it/context> WHERE {?location rdf:type schema:Place . ?observation sosa:hasFeatureOfInterest ?location ; rdf:type sosa:Observation}"
+      "sparql": "SELECT (COUNT(?observation) AS ?count) FROM \u003chttp://swamp-project.org/observation/cbec\u003e FROM \u003chttp://wot.arces.unibo.it/observation\u003e FROM \u003chttp://wot.arces.unibo.it/context\u003e WHERE {?location rdf:type schema:Place . ?observation sosa:hasFeatureOfInterest ?location ; rdf:type sosa:Observation}"
     },
     "FORECASTS_COUNT": {
-      "sparql": "SELECT (COUNT(?forecast) AS ?count) WHERE {GRAPH <http://wot.arces.unibo.it/forecast> {?forecast rdf:type swamp:Forecast}}"
+      "sparql": "SELECT (COUNT(?forecast) AS ?count) WHERE {GRAPH \u003chttp://wot.arces.unibo.it/forecast\u003e {?forecast rdf:type swamp:Forecast}}"
     },
     "IRRIGATION_REQUESTS_BY_FIELD": {
-      "sparql": "SELECT DISTINCT ?reservationNumber ?scheduled ?satisfied FROM <http://swamp-project.org/cbec/irrigation/2021> WHERE {?irr rdf:type swamp2:IrrigationRequest ; swamp2:hasField ?fieldUri ; swamp2:reservationNumber ?reservationNumber ; swamp2:hasStatus ?status . ?status swamp2:requestStatus swamp2:Scheduled ; time:inXSDDateTimeStamp ?scheduled . OPTIONAL{?irr swamp2:hasStatus ?statusSatisfied . ?statusSatisfied swamp2:requestStatus swamp2:Satisfied ; time:inXSDDateTimeStamp ?satisfied}} ORDER BY xsd:decimal(?reservationNumber)",
+      "sparql": "SELECT DISTINCT ?reservationNumber ?scheduled ?satisfied FROM \u003chttp://swamp-project.org/cbec/irrigation/2021\u003e WHERE {?irr rdf:type swamp2:IrrigationRequest ; swamp2:hasField ?fieldUri ; swamp2:reservationNumber ?reservationNumber ; swamp2:hasStatus ?status . ?status swamp2:requestStatus swamp2:Scheduled ; time:inXSDDateTimeStamp ?scheduled . OPTIONAL{?irr swamp2:hasStatus ?statusSatisfied . ?statusSatisfied swamp2:requestStatus swamp2:Satisfied ; time:inXSDDateTimeStamp ?satisfied}} ORDER BY xsd:decimal(?reservationNumber)",
       "forcedBindings": {
         "fieldUri": {
           "type": "uri",
@@ -1404,7 +1415,7 @@
       }
     },
     "getAllWeatherForecastFromDate": {
-      "sparql": "SELECT * WHERE {   GRAPH weather:forecast {    ?observation rdf:type sosa:Observation ;      sosa:hasFeatureOfInterest ?feature ;      sosa:observedProperty ?property ;  weather:recordCount ?recordCount;    sosa:resultTime ?time ;      sosa:phenomenonTime ?ptime ;      sosa:hasResult ?result .    ?result rdf:type qudt:QuantityValue ;      rdf:type sosa:Result;      sosa:isResultOf  ?observation;      qudt:unit ?unit ;      qudt:numericValue ?value .  } FILTER(SUBSTR(STR(?time),1,10) = ?startDate && STR(?feature) = ?theFeature ) }",
+      "sparql": "SELECT * WHERE {   GRAPH weather:forecast {    ?observation rdf:type sosa:Observation ;      sosa:hasFeatureOfInterest ?feature ;      sosa:observedProperty ?property ;  weather:recordCount ?recordCount;    sosa:resultTime ?time ;      sosa:phenomenonTime ?ptime ;      sosa:hasResult ?result .    ?result rdf:type qudt:QuantityValue ;      rdf:type sosa:Result;      sosa:isResultOf  ?observation;      qudt:unit ?unit ;      qudt:numericValue ?value .  } FILTER(SUBSTR(STR(?time),1,10) \u003d ?startDate \u0026\u0026 STR(?feature) \u003d ?theFeature ) }",
       "forcedBindings": {
         "feature": {
           "type": "uri"
@@ -1412,7 +1423,7 @@
       }
     },
     "getCriteriaForecast": {
-      "sparql": "SELECT DISTINCT ?feature ?property ?ptime ?value WHERE { GRAPH criteria:forecast { ?observation rdf:type sosa:Observation ; sosa:hasFeatureOfInterest ?feature ; sosa:observedProperty ?property ; sosa:resultTime ?time ;sosa:phenomenonTime ?ptime ;sosa:hasResult ?result .?result rdf:type qudt:QuantityValue ;rdf:type sosa:Result;sosa:isResultOf ?observation;qudt:unit ?unit ;qudt:numericValue ?value } bind( xsd:dateTime(concat(strbefore(str(now()),'T'),'T00:00:00.000Z')) as ?today) filter(?time >= ?today) }ORDER BY DESC(?ptime) ?feature ?property",
+      "sparql": "SELECT DISTINCT ?feature ?property ?ptime ?value WHERE { GRAPH criteria:forecast { ?observation rdf:type sosa:Observation ; sosa:hasFeatureOfInterest ?feature ; sosa:observedProperty ?property ; sosa:resultTime ?time ;sosa:phenomenonTime ?ptime ;sosa:hasResult ?result .?result rdf:type qudt:QuantityValue ;rdf:type sosa:Result;sosa:isResultOf ?observation;qudt:unit ?unit ;qudt:numericValue ?value } bind( xsd:dateTime(concat(strbefore(str(now()),\u0027T\u0027),\u0027T00:00:00.000Z\u0027)) as ?today) filter(?time \u003e\u003d ?today) }ORDER BY DESC(?ptime) ?feature ?property",
       "forcedBindings": {
         "feature": {
           "type": "uri"
@@ -1420,7 +1431,7 @@
       }
     },
     "getCriteriaHistory": {
-      "sparql": "SELECT * WHERE { GRAPH criteria:history { ?observation rdf:type sosa:Observation ; sosa:hasFeatureOfInterest ?feature ; sosa:observedProperty ?property ; sosa:resultTime ?time ; sosa:phenomenonTime ?ptime ; sosa:hasResult ?result . ?result rdf:type qudt:QuantityValue ; rdf:type sosa:Result; sosa:isResultOf ?observation; qudt:unit ?unit ; qudt:numericValue ?value } filter(?time >= ?ptime) }ORDER BY DESC(?time)",
+      "sparql": "SELECT * WHERE { GRAPH criteria:history { ?observation rdf:type sosa:Observation ; sosa:hasFeatureOfInterest ?feature ; sosa:observedProperty ?property ; sosa:resultTime ?time ; sosa:phenomenonTime ?ptime ; sosa:hasResult ?result . ?result rdf:type qudt:QuantityValue ; rdf:type sosa:Result; sosa:isResultOf ?observation; qudt:unit ?unit ; qudt:numericValue ?value } filter(?time \u003e\u003d ?ptime) }ORDER BY DESC(?time)",
       "forcedBindings": {
         "feature": {
           "type": "uri"
@@ -1480,7 +1491,7 @@
       }
     },
     "https://tools.vaimee.com/mqtt_agent/queries/mqtt_adapter/mqtt_broker_topics": {
-      "sparql": "SELECT ?topic WHERE { GRAPH <http://wot.arces.unibo.it/mqtt> {?broker mqtt:url ?url ; rdf:type mqtt:Broker ; mqtt:port ?port ; mqtt:user ?user ; mqtt:topic ?topic}}",
+      "sparql": "SELECT ?topic WHERE { GRAPH \u003chttp://wot.arces.unibo.it/mqtt\u003e {?broker mqtt:url ?url ; rdf:type mqtt:Broker ; mqtt:port ?port ; mqtt:user ?user ; mqtt:topic ?topic}}",
       "forcedBindings": {
         "url": {
           "type": "literal",
@@ -1498,10 +1509,10 @@
       }
     },
     "https://tools.vaimee.com/mqtt_agent/queries/mqtt_brokers": {
-      "sparql": "SELECT * WHERE { GRAPH <http://wot.arces.unibo.it/mqtt> {?broker mqtt:url ?url ; rdf:type mqtt:Broker ; mqtt:port ?port ; mqtt:sslProtocol ?sslProtocol ; mqtt:user ?user ; mqtt:password ?password ; mqtt:sslCA ?caFile ; mqtt:clientId ?clientId}}"
+      "sparql": "SELECT * WHERE { GRAPH \u003chttp://wot.arces.unibo.it/mqtt\u003e {?broker mqtt:url ?url ; rdf:type mqtt:Broker ; mqtt:port ?port ; mqtt:sslProtocol ?sslProtocol ; mqtt:user ?user ; mqtt:password ?password ; mqtt:sslCA ?caFile ; mqtt:clientId ?clientId}}"
     },
     "https://tools.vaimee.com/mqtt_mapper/queries/mqtt_mapper": {
-      "sparql": "SELECT ?topic ?regex {GRAPH <http://wot.arces.unibo.it/mqtt> {?mapper rdf:type mqtt:Mapper ; mqtt:topic ?topic . OPTIONAL {?mapper mqtt:regex ?regex}}}",
+      "sparql": "SELECT ?topic ?regex {GRAPH \u003chttp://wot.arces.unibo.it/mqtt\u003e {?mapper rdf:type mqtt:Mapper ; mqtt:topic ?topic . OPTIONAL {?mapper mqtt:regex ?regex}}}",
       "forcedBindings": {
         "mapper": {
           "type": "uri",
@@ -1510,13 +1521,13 @@
       }
     },
     "https://tools.vaimee.com/mqtt_mapper/queries/mqtt_mappers_topics": {
-      "sparql": "SELECT DISTINCT ?topic {GRAPH <http://wot.arces.unibo.it/mqtt> {?mapper rdf:type mqtt:Mapper ; mqtt:topic ?topic}}"
+      "sparql": "SELECT DISTINCT ?topic {GRAPH \u003chttp://wot.arces.unibo.it/mqtt\u003e {?mapper rdf:type mqtt:Mapper ; mqtt:topic ?topic}}"
     },
     "https://tools.vaimee.com/mqtt_mapper/queries/mqtt_mappings": {
-      "sparql": "SELECT * {GRAPH <http://wot.arces.unibo.it/mqtt> {?mapping rdf:type mqtt:Mapping ; mqtt:observation ?observation ; mqtt:topic ?topic}}"
+      "sparql": "SELECT * {GRAPH \u003chttp://wot.arces.unibo.it/mqtt\u003e {?mapping rdf:type mqtt:Mapping ; mqtt:observation ?observation ; mqtt:topic ?topic}}"
     },
     "https://tools.vaimee.com/mqtt_mapper/queries/mqtt_messages": {
-      "sparql": "SELECT * WHERE {GRAPH <http://wot.arces.unibo.it/mqtt/message> {?message rdf:type mqtt:Message ; mqtt:value ?value ; mqtt:topic ?topic ; mqtt:hasBroker ?broker;  time:inXSDDateTimeStamp ?timestamp}}"
+      "sparql": "SELECT * WHERE {GRAPH \u003chttp://wot.arces.unibo.it/mqtt/message\u003e {?message rdf:type mqtt:Message ; mqtt:value ?value ; mqtt:topic ?topic ; mqtt:hasBroker ?broker;  time:inXSDDateTimeStamp ?timestamp}}"
     },
     "https://tools.vaimee.com/queries/email": {
       "sparql": "SELECT * WHERE {GRAPH ?graph {?mail rdf:type schema:EmailMessage ; schema:toRecipient ?rec ; schema:about ?about ; schema:text ?text . ?rec schema:email ?to . ?about schema:name ?subject}}",

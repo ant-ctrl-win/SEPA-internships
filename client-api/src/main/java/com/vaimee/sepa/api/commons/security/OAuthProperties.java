@@ -25,6 +25,8 @@ import java.io.UnsupportedEncodingException;
 import java.util.Base64;
 import java.util.Date;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 
@@ -104,6 +106,10 @@ public class OAuthProperties {
 		if (secret != null) encryption = new Encryption(secret);
 
 		this.propertiesFile = new File(jsap.getBaseUri());
+
+		Logging.info("=== DIAG: OAuthProperties constructor ===");
+		Logging.info("DIAG: jsap.isSecure() = " + jsap.isSecure());
+		Logging.info("DIAG: jsap.getOauth() = " + (jsap.getOauth() != null ? jsap.getOauth().toString() : "null"));
 
 		if (jsap.isSecure()) {
 			oauthJsonObject = jsap.getOauth();
@@ -326,8 +332,9 @@ public class OAuthProperties {
 
 		fullJsap.add("oauth", oauthBlock);
 
+		Gson gson = new GsonBuilder().setPrettyPrinting().create();
 		try (FileWriter out = new FileWriter(propertiesFile)) {
-			out.write(fullJsap.toString());
+			out.write(gson.toJson(fullJsap));
 		} catch (IOException e) {
 			e.printStackTrace();
 			throw new SEPAPropertiesException("IOException: " + propertiesFile.getPath() + " " + e.getMessage());
