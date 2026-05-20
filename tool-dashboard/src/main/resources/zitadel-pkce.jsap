@@ -1,0 +1,52 @@
+{
+  "host": "localhost",
+  "oauth": {
+    "enable": true,
+    "ssl": "TLSv1.2",
+    "trustall": true,
+    "authorizationEndpoint": "https://sepa-auth-4ommwv.eu1.zitadel.cloud/oauth/v2/authorize",
+    "redirectUri": "http://localhost:8989/callback",
+    "authentication": {
+      "endpoint": "https://sepa-auth-4ommwv.eu1.zitadel.cloud/oauth/v2/token",
+      "client_id": "373753611164923038"
+    },
+    "provider": "zitadel"
+  },
+  "sparql11protocol": {
+    "protocol": "http",
+    "port": 8000,
+    "query": {
+      "path": "/query",
+      "method": "POST",
+      "format": "JSON"
+    },
+    "update": {
+      "path": "/update",
+      "method": "POST",
+      "format": "JSON"
+    }
+  },
+  "sparql11seprotocol": {
+    "reconnect": false,
+    "protocol": "ws",
+    "availableProtocols": {
+      "ws": {
+        "port": 9000,
+        "path": "/subscribe",
+        "scheme": "ws"
+      },
+      "wss": {
+        "port": 9443,
+        "path": "/secure/subscribe",
+        "scheme": "wss"
+      }
+    }
+  },
+  "namespaces": {
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#"
+  },
+  "queries": {},
+  "updates": {}
+}

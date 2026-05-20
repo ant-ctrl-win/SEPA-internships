@@ -63,6 +63,11 @@ public class Dependability {
 		isSecure = true;
 	}
 
+	public static void enableZitadelSecurity(SSLContext ssl, String jwksUri) throws SEPASecurityException {
+		authManager = new ZitadelSecurityManager(ssl, jwksUri);
+		isSecure = true;
+	}
+
 	public static SSLContext getSSLContext() throws SEPASecurityException {
 		if (authManager == null)
 			throw new SEPASecurityException("Authorization manager is null. First call enableSecurity()");

@@ -25,9 +25,19 @@ public class ZitadelSecurityManager extends SecurityManager {
 
 	private static final String MOCK_PASSWORD = "MOCK_PASSWORD_123";
 
+	private final ZitadelJWKSVerifier jwksVerifier;
+
+	@Deprecated
 	public ZitadelSecurityManager(SSLContext ssl, RSAKey key, LdapProperties prop, IsqlProperties isqlprop)
 			throws SEPASecurityException {
 		super(ssl, key, false);
+		this.jwksVerifier = null;
+	}
+
+	public ZitadelSecurityManager(SSLContext ssl, String jwksUri) throws SEPASecurityException {
+		super(ssl, null, false);
+		this.jwksVerifier = new ZitadelJWKSVerifier(jwksUri);
+		jwksVerifier.refreshJwkSet();
 	}
 	
 	@Override
@@ -40,22 +50,10 @@ public class ZitadelSecurityManager extends SecurityManager {
 		return new ErrorResponse(HttpStatus.SC_UNAUTHORIZED, "not supported", "Implemented by Zitadel");
 	}
 
-	/** Requesting Party Token 
-	 * <p>
-	 * If you want to validate these tokens without a call to the remote introspection endpoint, you can decode the RPT and query for its validity locally. 
-	 * Once you decode the token, you can also use the permissions within the token to enforce authorization decisions.
-	 * <p>
-	 * This is essentially what the policy enforcers do. Be sure to:
-	 * 1) Validate the signature of the RPT (based on the realm's public key)
-	 * 2) Query for token validity based on its exp, iat, and aud claims
-	 * <p>
-	 * The claim "preferred_username" is used to identify the user, with fallback to username and client_id for Zitadel service users.
-	 * */
 	@Override
 	public synchronized ClientAuthorization validateToken(String accessToken) {
 		Logging.log("oauth","VALIDATE TOKEN");
 
-		// Parse token
 		SignedJWT signedJWT = null;
 		try {
 			signedJWT = SignedJWT.parse(accessToken);
@@ -64,26 +62,34 @@ public class ZitadelSecurityManager extends SecurityManager {
 			return new ClientAuthorization("invalid_request", "ParseException: " + e.getMessage());
 		}
 
-		// Verify token
-		try {
-			if (!signedJWT.verify(verifier)) {
-				Logging.log("oauth","Signed JWT not verified");
-				return new ClientAuthorization("invalid_grant", "Signed JWT not verified");
+		if (jwksVerifier != null) {
+			try {
+				if (!jwksVerifier.verify(signedJWT)) {
+					Logging.log("oauth","JWT signature not verified against Zitadel JWKS");
+					return new ClientAuthorization("invalid_grant", "JWT signature not verified against Zitadel JWKS");
+				}
+			} catch (JOSEException | ParseException e) {
+				Logging.log("oauth",e.getMessage());
+				return new ClientAuthorization("invalid_grant", "Verification exception: " + e.getMessage());
 			}
-
-		} catch (JOSEException e) {
-			Logging.log("oauth",e.getMessage());
-			return new ClientAuthorization("invalid_grant", "JOSEException: " + e.getMessage());
+		} else {
+			Logging.log("oauth","No JWKS verifier configured, using local engine key");
+			try {
+				if (!signedJWT.verify(verifier)) {
+					Logging.log("oauth","Signed JWT not verified");
+					return new ClientAuthorization("invalid_grant", "Signed JWT not verified");
+				}
+			} catch (JOSEException e) {
+				Logging.log("oauth",e.getMessage());
+				return new ClientAuthorization("invalid_grant", "JOSEException: " + e.getMessage());
+			}
 		}
-		
 
 		String uid;
-		// Process token (validate)
 		JWTClaimsSet claimsSet = null;
 		try {
 			claimsSet = signedJWT.getJWTClaimsSet();
 			Logging.log("oauth",claimsSet.toString());
-			// Get client credentials for accessing the SPARQL endpoint
 			uid = claimsSet.getStringClaim("preferred_username");
 			if (uid == null) {
 				Logging.log("oauth","<preferred_username> claim is null. Look for <username>");
@@ -93,7 +99,11 @@ public class ZitadelSecurityManager extends SecurityManager {
 					uid = claimsSet.getStringClaim("client_id");
 					if (uid == null) {
 						Logging.log("oauth","USER ID not found...");
-						return new ClientAuthorization("invalid_grant", "User identity claim not found");
+						uid = claimsSet.getStringClaim("sub");
+						if (uid == null) {
+							Logging.log("oauth","No identity claim found in token");
+							return new ClientAuthorization("invalid_grant", "User identity claim not found");
+						}
 					}
 				}
 			}
@@ -106,9 +116,6 @@ public class ZitadelSecurityManager extends SecurityManager {
 			return new ClientAuthorization("invalid_grant", "ParseException. " + e.getMessage());
 		}
 
-
-		// Check token expiration (an "invalid_grant" error is raised if the token is
-		// expired)
 		Date now = new Date();
 		long nowUnixSeconds = (now.getTime() / 1000) * 1000;
 		Date expiring = claimsSet.getExpirationTime();
@@ -142,55 +149,43 @@ public class ZitadelSecurityManager extends SecurityManager {
 
 	@Override
 	public void addAuthorizedIdentity(DigitalIdentity identity) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void removeAuthorizedIdentity(String uid) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public DigitalIdentity getIdentity(String uid) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public boolean isAuthorized(String identity) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public boolean isForTesting(String identity) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public boolean storeCredentials(DigitalIdentity identity, String secret) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public void removeCredentials(DigitalIdentity identity) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public boolean containsCredentials(String uid) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public boolean checkCredentials(String uid, String secret) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
@@ -201,104 +196,79 @@ public class ZitadelSecurityManager extends SecurityManager {
 
 	@Override
 	public void addJwt(String id, SignedJWT claims) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public boolean containsJwt(String id) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public SignedJWT getJwt(String uid) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public void removeJwt(String id) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public Date getTokenExpiringDate(String id) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public long getTokenExpiringPeriod(String id) {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
 	public void setTokenExpiringPeriod(String id, long period) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void setDeviceExpiringPeriod(long period) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public long getDeviceExpiringPeriod() {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
 	public void setApplicationExpiringPeriod(long period) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public long getApplicationExpiringPeriod() {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
 	public void setUserExpiringPeriod(long period) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public long getUserExpiringPeriod() {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
 	public void setDefaultExpiringPeriod(long period) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public long getDefaultExpiringPeriod() {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
 	public String getIssuer() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public void setIssuer(String is) {
-		// TODO Auto-generated method stub
-		
 	}
 
 }

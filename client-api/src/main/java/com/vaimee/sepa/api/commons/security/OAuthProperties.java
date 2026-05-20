@@ -82,6 +82,10 @@ public class OAuthProperties {
 	private long expires = -1;
 	private String type = null;
 
+	private String authorizationEndpoint = null;
+	private String redirectUri = null;
+	private transient String codeVerifier;
+
 	private String ssl = "TLS";
 	private String jks = null;
 	private String jksSecret = null;
@@ -146,6 +150,13 @@ public class OAuthProperties {
 						expires = decryptLongOrDefault(auth.get("expires").getAsString());
 					if (auth.has("type"))
 						type = decryptOrDefault(auth.get("type").getAsString());	
+				}
+
+				if (oauthJsonObject.has("authorizationEndpoint")) {
+					authorizationEndpoint = oauthJsonObject.get("authorizationEndpoint").getAsString();
+				}
+				if (oauthJsonObject.has("redirectUri")) {
+					redirectUri = oauthJsonObject.get("redirectUri").getAsString();
 				}
 											
 				// Initial access token registration
@@ -322,6 +333,13 @@ public class OAuthProperties {
 			oauthBlock.add("authentication", auth);
 		}
 
+		if (authorizationEndpoint != null) {
+			oauthBlock.add("authorizationEndpoint", new JsonPrimitive(authorizationEndpoint));
+		}
+		if (redirectUri != null) {
+			oauthBlock.add("redirectUri", new JsonPrimitive(redirectUri));
+		}
+
 		if (provider.equals(OAUTH_PROVIDER.SEPA)) {
 			oauthBlock.add("provider", new JsonPrimitive("sepa"));
 		} else if (provider.equals(OAUTH_PROVIDER.KEYCLOAK)) {
@@ -375,6 +393,34 @@ public class OAuthProperties {
 
 	public String getClientSecret() {
 		return clientSecret;
+	}
+
+	public String getAuthorizationEndpoint() {
+		return authorizationEndpoint;
+	}
+
+	public void setAuthorizationEndpoint(String authorizationEndpoint) {
+		this.authorizationEndpoint = authorizationEndpoint;
+	}
+
+	public String getRedirectUri() {
+		return redirectUri;
+	}
+
+	public void setRedirectUri(String redirectUri) {
+		this.redirectUri = redirectUri;
+	}
+
+	public String getCodeVerifier() {
+		return codeVerifier;
+	}
+
+	public void setCodeVerifier(String codeVerifier) {
+		this.codeVerifier = codeVerifier;
+	}
+
+	public boolean isAuthorizationCodeFlow() {
+		return authorizationEndpoint != null && redirectUri != null;
 	}
 
 	private String decryptOrDefault(String value) {

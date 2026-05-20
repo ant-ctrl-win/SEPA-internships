@@ -95,6 +95,8 @@ public class Dashboard implements LoginListener {
 
 	private Login login = null;
 
+	private String currentJwt = null;
+
 	private final ArrayList<String> jsapFiles = new ArrayList<>();
 
 	private JTree explorerTree;
@@ -316,51 +318,21 @@ public class Dashboard implements LoginListener {
 		subscribeButton.setEnabled(false);
 
 		if (file == null) {
-			try {
-				loadDashboardProperties();
-			} catch (IOException e) {
-				logger.warn(e.getMessage());
-				try {
-					return onLoadJSAPButton();
-				} catch (SEPASecurityException | URISyntaxException e1) {
-					logger.error(e1.getMessage());
-					return false;
-				}
-			}
-
-			// LOAD properties
-			String path = appProperties.getProperty("appProfile");
-
-			if (path == null) {
-				logger.error("Path in dashboard.properties is null");
+			java.net.URL jsapUrl = getClass().getResource("/zitadel-pkce.jsap");
+			if (jsapUrl == null) {
+				logger.error("zitadel-pkce.jsap not found on classpath");
 				return false;
 			}
-
-			String[] jsaps = path.split(",");
+			try {
+				appProfile = new JSAP(jsapUrl.toURI());
+			} catch (SEPAPropertiesException | java.net.URISyntaxException e) {
+				logger.error("Failed to load zitadel-pkce.jsap from classpath: " + e.getMessage());
+				return false;
+			}
+			jsapFiles.clear();
+			jsapFiles.add("zitadel-pkce.jsap (classpath)");
 			jsapListDM.clear();
-
-			for (String jsap : jsaps) {
-				jsapFiles.add(jsap);
-				jsapListDM.add(jsap);
-			}
-
-			try {
-				appProfile = new JSAP("file:///" + jsapFiles.get(0).replaceAll("\\\\", "/"));
-			} catch (SEPAPropertiesException e) {
-				logger.error(e.getMessage());
-				return false;
-			}
-
-			if (jsapFiles.size() > 1) {
-				for (int i = 1; i < jsaps.length; i++) {
-					try {
-						JSAP temp = new JSAP("file:///" + jsapFiles.get(i).replaceAll("\\\\", "/"));
-						appProfile.merge(temp);
-					} catch (SEPAPropertiesException e) {
-						logger.error(e.getMessage());
-					}
-				}
-			}
+			jsapListDM.add("zitadel-pkce.jsap");
 		} else {
 			try {
 				loadDashboardProperties();
@@ -421,19 +393,9 @@ public class Dashboard implements LoginListener {
 //		handler.setSepaClient(sepaClient);
 
 		// Security
-		logger.info("=== DIAG: Security check before login ===");
-		logger.info("DIAG: appProfile.isSecure() = " + appProfile.isSecure());
-		logger.info("DIAG: appProfile.getOauth() = " + (appProfile.getOauth() != null ? appProfile.getOauth().toString() : "null"));
-		logger.info("DIAG: appProfile.getAuthenticationProperties() = " + appProfile.getAuthenticationProperties());
-		logger.info("DIAG: jsapFiles = " + jsapFiles);
-		logger.info("========================================");
-
 		if (appProfile.isSecure()) {
-			login = new Login(appProfile.getAuthenticationProperties(), this, frmSepaDashboard);// ,clientIDString,clientSecretString);
+			login = new Login(appProfile.getAuthenticationProperties(), this, frmSepaDashboard);
 			login.setVisible(true);
-		} else {
-			logger.warn("DIAG: !!! BYPASSING LOGIN — appProfile.isSecure() returned false !!!");
-			onLogin("ვაიმეე");
 		}
 
 		return true;
@@ -1764,7 +1726,10 @@ public class Dashboard implements LoginListener {
 
 	// LOGIN
 	@Override
-	public void onLogin(String id) {
+	public void onLogin(String id, String jwt) {
+		logger.info("Login successful — user: " + id);
+
+		this.currentJwt = jwt;
 
 		try {
 			sepaClient = new DashboadApp(appProfile, handler);
@@ -1772,17 +1737,7 @@ public class Dashboard implements LoginListener {
 			handler.setSepaClient(sepaClient);
 			tableInstancePropertiesDataModel.setSepaClient(sepaClient);
 
-//			if (login != null) {
-//				login.setVisible(false);
-//				btnLogin.setEnabled(true);
-//				btnLogin.setText("Sign out");
-//				signedIn = true;
-//			} else {
-//				btnLogin.setVisible(false);
-//				btnRegister.setVisible(false);
-//			}
-
-			frmSepaDashboard.setTitle(title + " - Client ID: " + id);
+			frmSepaDashboard.setTitle(title + " - User: " + id);
 
 		} catch (SEPAProtocolException | SEPASecurityException | SEPAPropertiesException e) {
 			logger.error(e.getMessage());
@@ -1798,5 +1753,10 @@ public class Dashboard implements LoginListener {
 	@Override
 	public void onLoginError(ErrorResponse err) {
 		logger.error(err.toString());
+	}
+
+	@Override
+	public void onLoginTimeout() {
+		logger.warn("Login timed out. The user did not complete authentication in the browser within the time limit.");
 	}
 }

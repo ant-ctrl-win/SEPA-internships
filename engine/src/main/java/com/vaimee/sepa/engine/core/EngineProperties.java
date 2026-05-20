@@ -398,6 +398,7 @@ public class EngineProperties {
 	RSAKey jwt = null;
 	LdapProperties ldap = null;
 	IsqlProperties isql = null;
+	String jwksUri = null;
 	
 	private SPARQL11Properties endpointProperties;
 	private Parameters parameters;
@@ -603,6 +604,10 @@ public class EngineProperties {
 		case "-isqlport":
 			isqlPort = Integer.parseInt(value);
 			break;
+
+		case "-zitadel.jwksUri":
+			jwksUri = value;
+			break;
 			
 		case "-parameters.gates.ports.http":
 			parameters.gates.ports.http = Integer.parseInt(value);
@@ -806,7 +811,7 @@ public class EngineProperties {
 			} else if (isKeycìCloakEnabled()) {
 				Dependability.enableKeyCloakSecurity(ssl, jwt, ldap, isql);
 			} else if (isZitadelEnabled()) {
-				Dependability.enableKeyCloakSecurity(ssl, jwt, ldap, isql);
+				Dependability.enableZitadelSecurity(ssl, jwksUri);
 			}
 
 			// Check that SSL has been properly configured

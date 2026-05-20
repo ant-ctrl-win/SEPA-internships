@@ -73,17 +73,14 @@ public abstract class SecurityManager implements IAuthorization,ISecurityManager
 	private final SSLContext ssl;
 	
 	public SecurityManager(SSLContext ctx,RSAKey jwk,boolean signing) throws SEPASecurityException {
-		ssl = ctx; //new SSLManager().getSSLContextFromJKS(keystoreFileName, keystorePwd);
+		ssl = ctx;
 		
 		try {
-//			KeyStore keystore = KeyStore.getInstance("JKS");
-//			keystore.load(new FileInputStream(keystoreFileName), keystorePwd.toCharArray());
-//			
-//			RSAKey jwk = RSAKey.load(keystore, keyAlias, keystorePwd.toCharArray());
+			if (jwk != null) {
+				setupValidation(jwk);
+			}
 			
-			setupValidation(jwk);
-			
-			if (signing) setupSigning(jwk);
+			if (signing && jwk != null) setupSigning(jwk);
 		} catch (JOSEException e) {
 			Logging.error(e.getMessage());
 			if (Logging.isTraceEnabled()) e.printStackTrace();

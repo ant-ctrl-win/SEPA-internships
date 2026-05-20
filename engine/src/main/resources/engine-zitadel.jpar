@@ -1,0 +1,12 @@
+{
+  "parameters": {
+    "gates": {
+      "security": {
+        "enabled": true,
+        "type": "zitadel",
+        "tls": false,
+        "comment": "Start with: -zitadel.jwksUri https://sepa-auth-4ommwv.eu1.zitadel.cloud/oauth/v2/keys"
+      }
+    }
+  }
+}

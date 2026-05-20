@@ -38,6 +38,74 @@ public class ZitadelAuthenticationService extends AuthenticationService {
 		return new ErrorResponse(501, "not_supported", "Dynamic client registration disabled. Configure client manually in Zitadel.");
 	}
 
+	public Response exchangeCodeForToken(String code, String codeVerifier, String redirectUri, int timeout) {
+		Logging.log("oauth", "CODE_EXCHANGE: code=" + (code != null ? code.substring(0, Math.min(8, code.length())) + "..." : "null"));
+
+		CloseableHttpResponse response = null;
+		Logging.Timestamp start = new Logging.Timestamp();
+
+		try {
+			URI uri = new URI(oauthProperties.getTokenRequestUrl());
+			HttpPost httpRequest = new HttpPost(uri);
+
+			List<NameValuePair> params = new ArrayList<NameValuePair>();
+			params.add(new BasicNameValuePair("grant_type", "authorization_code"));
+			params.add(new BasicNameValuePair("client_id", oauthProperties.getClientId()));
+			params.add(new BasicNameValuePair("code", code));
+			params.add(new BasicNameValuePair("redirect_uri", redirectUri));
+			params.add(new BasicNameValuePair("code_verifier", codeVerifier));
+			UrlEncodedFormEntity body = new UrlEncodedFormEntity(params, Charset.forName("UTF-8"));
+			httpRequest.setEntity(body);
+			httpRequest.setHeader("Content-Type", "application/x-www-form-urlencoded");
+
+			RequestConfig requestConfig = RequestConfig.custom().setSocketTimeout(timeout).setConnectTimeout(timeout)
+					.build();
+			httpRequest.setConfig(requestConfig);
+
+			try {
+				response = httpClient.execute(httpRequest);
+			} catch (Exception e) {
+				ErrorResponse err = new ErrorResponse(HttpStatus.SC_INTERNAL_SERVER_ERROR, e.getClass().getName(), e.getMessage());
+				Logging.error(err);
+				return err;
+			}
+
+			Logging.log("oauth", "CODE_EXCHANGE Response: " + response);
+			HttpEntity entity = response.getEntity();
+			String jsonResponse = EntityUtils.toString(entity, Charset.forName("UTF-8"));
+			EntityUtils.consume(entity);
+
+			JsonObject json = new Gson().fromJson(jsonResponse, JsonObject.class);
+
+			if (json.has("error")) {
+				Logging.logTiming("CODE_EXCHANGE", start, new Logging.Timestamp());
+				ErrorResponse error = new ErrorResponse(response.getStatusLine().getStatusCode(), "code_exchange",
+						json.get("error").getAsString());
+				return error;
+			}
+
+			Logging.logTiming("CODE_EXCHANGE", start, new Logging.Timestamp());
+			return new JWTResponse(json);
+		} catch (Exception e) {
+			Logging.error(e.getMessage());
+			Logging.logTiming("CODE_EXCHANGE", start, new Logging.Timestamp());
+			return new ErrorResponse(HttpStatus.SC_INTERNAL_SERVER_ERROR, "Exception", e.getMessage());
+		} finally {
+			try {
+				if (response != null)
+					response.close();
+			} catch (IOException e) {
+				Logging.error(e.getMessage());
+				Logging.logTiming("CODE_EXCHANGE", start, new Logging.Timestamp());
+				return new ErrorResponse(HttpStatus.SC_INTERNAL_SERVER_ERROR, "IOException", e.getMessage());
+			}
+		}
+	}
+
+	public Response exchangeCodeForToken(String code, String codeVerifier, String redirectUri) {
+		return exchangeCodeForToken(code, codeVerifier, redirectUri, 10000);
+	}
+
 	@Override
 	public Response requestToken(String authorization, int timeout) {
 		Logging.log("oauth","TOKEN_REQUEST: " + authorization);
