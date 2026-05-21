@@ -52,6 +52,8 @@ public class Login extends JDialog {
 		setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
 		if (oauth == null)
 			throw new IllegalArgumentException("OAuthProperties is null");
+		if (!oauth.isValid())
+			throw new IllegalArgumentException("OAuthProperties is invalid: missing required fields (client_id, authorizationEndpoint, tokenRequest, redirectUri)");
 		if (m_listener == null)
 			throw new IllegalArgumentException("LoginListener is null");
 

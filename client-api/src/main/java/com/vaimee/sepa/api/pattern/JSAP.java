@@ -419,6 +419,19 @@ public class JSAP extends SPARQL11SEProperties {
 		return oauth.get("enable").getAsBoolean();
 	}
 
+	public boolean hasOAuth() {
+		if (oauth == null) return false;
+		if (!oauth.has("enable")) return false;
+		if (!oauth.get("enable").getAsBoolean()) return false;
+		if (!oauth.has("authorizationEndpoint")) return false;
+		if (!oauth.has("tokenRequest") && !(oauth.has("authentication") && oauth.getAsJsonObject("authentication").has("endpoint"))) return false;
+		return true;
+	}
+
+	public boolean oauthExists() {
+		return oauth != null && oauth.has("enable") && oauth.get("enable").getAsBoolean();
+	}
+
 	public boolean reconnect() {
 		return super.getReconnect();
 	}

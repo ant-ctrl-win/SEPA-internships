@@ -27,6 +27,7 @@ import com.vaimee.sepa.api.commons.properties.UpdateProperties;
 import com.vaimee.sepa.api.commons.response.ErrorResponse;
 import com.vaimee.sepa.api.commons.response.QueryResponse;
 import com.vaimee.sepa.api.commons.response.Response;
+import com.vaimee.sepa.api.commons.security.OAuthProperties;
 import com.vaimee.sepa.api.commons.sparql.*;
 import com.vaimee.sepa.api.pattern.JSAP;
 import com.vaimee.sepa.tools.dashboard.bindings.BindingValue;
@@ -393,10 +394,15 @@ public class Dashboard implements LoginListener {
 //		handler.setSepaClient(sepaClient);
 
 		// Security
-		if (appProfile.isSecure()) {
-			login = new Login(appProfile.getAuthenticationProperties(), this, frmSepaDashboard);
-			login.setVisible(true);
+		OAuthProperties authProps = appProfile.getAuthenticationProperties();
+		if (!appProfile.isSecure() || authProps == null || !authProps.isValid()) {
+			String msg = "OAuth authentication is mandatory.\nThe JSAP file is missing a valid \"oauth\" configuration block.\n\nRequired fields: authorizationEndpoint, tokenRequest, redirectUri, client_id";
+			logger.error("FATAL: " + msg);
+			javax.swing.JOptionPane.showMessageDialog(frmSepaDashboard, msg, "SEPA Authentication Required", javax.swing.JOptionPane.ERROR_MESSAGE);
+			System.exit(1);
 		}
+		login = new Login(authProps, this, frmSepaDashboard);
+		login.setVisible(true);
 
 		return true;
 	}

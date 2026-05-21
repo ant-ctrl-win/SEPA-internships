@@ -42,6 +42,12 @@ public class SEPAChatTest {
 	private static void init() throws SEPASecurityException, SEPAPropertiesException, SEPAProtocolException, IOException {
 		cfg = new JSAPProvider();
 
+		if (!cfg.getJsap().isSecure()) {
+			logger.fatal("FATAL: OAuth authentication is mandatory. The JSAP file is missing a valid \"oauth\" configuration block.");
+			System.err.println("FATAL: OAuth authentication is mandatory. The JSAP file is missing a valid \"oauth\" configuration block.");
+			System.exit(1);
+		}
+
 		BASE = cfg.getJsap().getExtendedData().get("base").getAsInt();
 		N_CLIENTS = cfg.getJsap().getExtendedData().get("clients").getAsInt();
 		MESSAGES = cfg.getJsap().getExtendedData().get("messages").getAsInt();

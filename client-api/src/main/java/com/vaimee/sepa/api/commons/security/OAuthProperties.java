@@ -423,6 +423,15 @@ public class OAuthProperties {
 		return authorizationEndpoint != null && redirectUri != null;
 	}
 
+	public boolean isValid() {
+		if (!enabled) return false;
+		if (clientId == null || clientId.isEmpty()) return false;
+		if (authorizationEndpoint == null || authorizationEndpoint.isEmpty()) return false;
+		if (tokenRequestURL == null || tokenRequestURL.isEmpty()) return false;
+		if (redirectUri == null || redirectUri.isEmpty()) return false;
+		return true;
+	}
+
 	private String decryptOrDefault(String value) {
 		try {
 			return encryption.decrypt(value);
